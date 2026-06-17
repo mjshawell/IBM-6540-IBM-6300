@@ -1,0 +1,62 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>M02 Reflection</title><style>body{font-family:Arial,sans-serif;line-height:1.6;max-width:900px;margin:40px auto;padding:0 24px;color:#222}h1{border-bottom:2px solid #ddd;padding-bottom:6px;margin-top:38px}h2{color:#374151}.callout{background:#eef6ff;border-left:5px solid #3b82f6;padding:14px;margin:18px 0}blockquote{background:#f7f7f7;border-left:4px solid #999;padding:10px 16px}table{border-collapse:collapse;width:100%;margin:16px 0}td,th{border:1px solid #ccc;padding:8px}th{background:#f2f2f2}</style></head><body><h1>Reflection on Introduction to R for Data Science</h1>
+<h2>Purpose of This Reflection</h2>
+<p>This reflection summarizes what I learned in Module 02 about reproducible data science, literate coding, Quarto, the Tidyverse ecosystem, useful R packages, and the R vs. Python debate.</p>
+<h1>Reproducibility Crisis</h1>
+<h2>Prompt</h2>
+<p>Summarize the video presentation about the reproducibility crisis.</p>
+<h2>Response</h2>
+<p>The video presentation about the reproducibility crisis explained that many research findings are difficult to reproduce because the original data, code, methods, or assumptions are often unclear or unavailable. I learned that reproducibility is not just an academic issue. It affects trust, decision-making, and whether others can verify the results of an analysis.</p>
+<p>In data science, reproducibility means that another person should be able to follow the same steps and reach the same or very similar results. This requires organized files, transparent code, clear documentation, and a workflow that connects the written explanation with the actual analysis.</p>
+<blockquote>Reproducibility matters because strong conclusions should be supported by transparent evidence, not just final results.</blockquote>
+<h1>Reproducible Data Science and Literate Coding</h1>
+<h2>Prompt</h2>
+<p>Summarize the new things you learned in this module about reproducible data science and literate coding.</p>
+<h2>Response</h2>
+<p>One of the biggest things I learned is that reproducible data science depends on combining writing, code, data, and output in one organized workflow. Literate coding helps with this because it allows the analyst to explain what they are doing while also showing the code that produced the results.</p>
+<p>Before learning Quarto, I thought coding and report writing were mostly separate tasks. Now I understand that tools like Quarto allow me to write a professional report while also including R code, tables, charts, and explanations in the same file. This makes the final HTML document easier to understand and easier to verify.^[A reproducible report should make it clear how conclusions were produced, not just what the conclusions are.]</p>
+<h2>Key Takeaway</h2>
+<p>Literate coding helps make data work more transparent because the explanation and the code live together in the same document.</p>
+<h1>Reproducibility in My Field</h1>
+<h2>Prompt</h2>
+<p>What do you think about the reproducible crisis in your field? How can Quarto help address the concerns you have about reproducibility in your line of work?</p>
+<h2>Response</h2>
+<p>In my field of digital marketing, reproducibility is a major concern because marketers often make decisions based on dashboards, campaign reports, attribution models, A/B tests, and performance summaries. If the data cleaning process, assumptions, or formulas are not documented clearly, then the final recommendation may be hard to trust.</p>
+<p>For example, a paid media report might say that one campaign had the best return on ad spend, but if the tracking setup, filters, attribution window, or data source is unclear, the conclusion may be misleading. This matters because marketing decisions can affect real budgets.</p>
+<p>Quarto can help because it allows me to document the full process behind an analysis. I can explain the business question, show the code, summarize the results, and produce a polished HTML report. This would be useful for campaign reporting, SEO analysis, marketing dashboards, and client presentations.</p>
+<h1>Quarto Lectures and Impressive Features</h1>
+<h2>Prompt</h2>
+<p>Summarize the instructor&#x27;s lectures in the previous module about Quarto that you found impressive. Do you see yourself using Quarto every day for your job or studies?</p>
+<h2>Response</h2>
+<p>The most impressive part of Quarto is that it can create professional documents from one source file. I learned that a `.qmd` file can become an HTML report, PDF, Word document, presentation, or website. This makes Quarto useful for both academic and professional work.</p>
+<p>I also found features like YAML headers, table of contents, section numbering, callout blocks, code chunks, and embedded resources impressive. These features make the final document look organized and professional.</p>
+<p>I can see myself using Quarto for class notes, homework assignments, marketing analytics reports, SEO audits, and campaign performance summaries. Since I work with marketing data and want to build stronger analytics skills, Quarto could help me create reports that are both technical and easy for non-technical people to understand.</p>
+<h1>Tidyverse Ecosystem</h1>
+<h2>Prompt</h2>
+<p>Summarize what you learned in this module about the Tidyverse ecosystem in R. What can you do with R?</p>
+<h2>Response</h2>
+<p>The Tidyverse is a collection of R packages designed to make data science easier and more organized. I learned that the Tidyverse helps with importing data, cleaning data, transforming variables, summarizing information, and creating visualizations.</p>
+<p>Some important Tidyverse packages include `dplyr` for data wrangling, `ggplot2` for visualization, `readr` for importing data, `tidyr` for reshaping data, and `stringr` for working with text.</p>
+<p>With R, I can clean messy datasets, run statistical analysis, build charts, create reports, and communicate insights. In digital marketing, this can be useful for analyzing campaign performance, customer behavior, website traffic, SEO results, and advertising data.</p>
+<p>As shown in @tbl-tidyverse, each package supports a different part of the data science workflow.</p>
+<h1>Packages Beyond Tidyverse, Base R, and Quarto</h1>
+<h2>Prompt</h2>
+<p>Refer to the video introducing the top 20 packages. Among the various packages introduced, choose two packages beyond the Tidyverse ecosystem, base R, and Quarto that could enhance your job/career. Tell me why you think so.</p>
+<h2>Response</h2>
+<p>Two packages beyond the Tidyverse that could help my career are `shiny` and `forecast`.</p>
+<p>The `shiny` package could help me create interactive dashboards and web applications. This is useful for digital marketing because clients and teams often want to explore campaign performance, KPIs, and trends without reading a long static report. A Shiny dashboard could make marketing analytics more interactive and easier to present.</p>
+<p>The `forecast` package could help with predicting future trends. In marketing, forecasting can be useful for estimating future sales, website traffic, ad performance, or seasonal demand. This would help me make better recommendations about budget allocation and campaign planning.</p>
+<h2>Career Connection</h2>
+<p>Packages like `shiny` and `forecast` can help me move beyond basic reporting and toward more advanced marketing analytics and decision support.</p>
+<h1>R vs. Python Debate</h1>
+<h2>Prompt</h2>
+<p>Refer to the debate on R vs. Python. What is your take on this debate? In your response, consider how Quarto enables people using R and Python in the same team to still collaborate.</p>
+<h2>Response</h2>
+<p>My take on the R vs. Python debate is that both languages are valuable, and the best choice depends on the project. R is very strong for statistics, data visualization, academic research, and reporting. Python is very strong for automation, machine learning, software development, and production workflows.</p>
+<p>Instead of choosing one language as better than the other, I think students and professionals should understand how both can fit into a data science workflow. For my own career in digital marketing analytics, R is useful for analysis, visualization, and reports, while Python could be useful for automation, APIs, and larger data workflows.</p>
+<p>Quarto helps solve part of the R vs. Python debate because it allows teams to collaborate even if different people use different languages. A Quarto document can include R and Python code in the same reporting environment. This makes it easier for analysts, marketers, and data scientists to work together while still producing one organized final report.</p>
+<h1>Conclusion</h1>
+<p>Overall, this module helped me understand that data science is not only about writing code. It is also about organizing work, explaining decisions, documenting methods, and communicating results clearly. Quarto, R, and the Tidyverse provide a strong foundation for reproducible data science, especially for someone interested in digital marketing analytics.</p>
+<h1>Submission Links</h1>
+<p>After publishing, replace the placeholders below with your actual links.</p>
+<li>GitHub Repository URL: `PASTE YOUR GITHUB REPO URL HERE`</li>
+<li>GitHub Pages URL: `PASTE YOUR GITHUB PAGES URL HERE`</li><table><tr><th>Tidyverse Package</th><th>Main Use</th></tr><tr><td>dplyr</td><td>Data cleaning and transformation</td></tr><tr><td>ggplot2</td><td>Data visualization</td></tr><tr><td>readr</td><td>Importing data</td></tr><tr><td>tidyr</td><td>Reshaping data</td></tr><tr><td>stringr</td><td>Text analysis</td></tr></table></body></html>
