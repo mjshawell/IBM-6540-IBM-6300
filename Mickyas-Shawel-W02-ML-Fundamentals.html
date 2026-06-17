@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Mickyas Shawel" />
+  <title>W02: Reflection on Fundamentals of Machine Learning</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">W02: Reflection on Fundamentals of Machine
+Learning</h1>
+<p class="subtitle">Reflections and Hands-On Lab</p>
+<p class="author">Mickyas Shawel</p>
+<p class="date">today</p>
+</header>
+<p><code>{r setup} library(tidyverse) library(broom)</code></p>
+<h1 id="introduction">Introduction</h1>
+<section id="purpose-of-this-report" class="callout-note">
+<h2>Purpose of This Report</h2>
+<p>This report reflects on the fundamentals of machine learning, the
+<code>tidymodels</code> ecosystem, MLOps, and hands-on modeling practice
+using base R and marketing data. The goal is to connect machine learning
+concepts with practical analysis and professional reporting through
+Quarto.</p>
+</section>
+<h1 id="step-1-introduction-to-tidymodels">Step 1: Introduction to
+<code>tidymodels</code></h1>
+<h2 id="prompt">Prompt</h2>
+<p>In Step 1, the textbook authors made a case for a new approach in
+machine learning with the <code>tidymodels</code> package. Summarize the
+video presentation.</p>
+<h2 id="response">Response</h2>
+<p>The video presentation explained that machine learning in R has
+become more organized and consistent through the <code>tidymodels</code>
+ecosystem. Instead of using many unrelated modeling functions with
+different syntax, <code>tidymodels</code> provides a unified approach
+for building, evaluating, and comparing models.</p>
+<p>The main idea is that machine learning should follow a clear
+workflow. This includes preparing the data, splitting data into training
+and testing sets, creating recipes for preprocessing, choosing a model,
+fitting the model, evaluating performance, and communicating the
+results. The presentation made the case that a consistent framework
+helps analysts avoid confusion and makes machine learning more
+reproducible.</p>
+<blockquote>
+<p>Machine learning is not only about fitting a model. It is also about
+creating a repeatable workflow that others can understand, evaluate, and
+reuse.</p>
+</blockquote>
+<h2 id="prompt-1">Prompt</h2>
+<p>What did you learn about <code>tidymodels</code>? How is it different
+from others, such as <code>caret</code>? What are the strengths and
+weaknesses of <code>tidymodels</code>?</p>
+<h2 id="response-1">Response</h2>
+<p>I learned that <code>tidymodels</code> is a collection of packages
+designed to make machine learning in R more consistent and tidy. It
+follows the same general philosophy as the Tidyverse, where data is
+organized in tables and functions work together in a readable
+pipeline.</p>
+<p>Compared with <code>caret</code>, <code>tidymodels</code> feels more
+modern and modular. <code>caret</code> is powerful and has been widely
+used for many years, but <code>tidymodels</code> separates the modeling
+workflow into clearer parts. For example, <code>rsample</code> handles
+data splitting, <code>recipes</code> handles preprocessing,
+<code>parsnip</code> handles model specification, <code>workflows</code>
+combines steps together, and <code>yardstick</code> evaluates model
+performance.</p>
+<p>A major strength of <code>tidymodels</code> is that it encourages
+reproducible workflows. It also makes it easier to compare different
+models using a consistent structure. A weakness is that it can feel
+overwhelming at first because there are many packages and steps to
+learn. For beginners, base R modeling may feel simpler at the beginning,
+but <code>tidymodels</code> becomes more useful as projects become more
+complex.</p>
+<section id="key-takeaway" class="callout-tip">
+<h2>Key Takeaway</h2>
+<p><code>tidymodels</code> helps turn machine learning from a collection
+of disconnected commands into a structured and reproducible
+workflow.</p>
+</section>
+<h2 id="prompt-2">Prompt</h2>
+<p>What does the workflow look like when you use <code>tidymodels</code>
+for machine learning?</p>
+<h2 id="response-2">Response</h2>
+<p>A typical <code>tidymodels</code> workflow begins by defining the
+business or research question. Then the analyst prepares the data and
+splits it into training and testing sets. The training data is used to
+build the model, while the testing data is used to evaluate how well the
+model performs on new data.</p>
+<p>The workflow usually includes these steps:</p>
+<ol type="1">
+<li>Load and inspect the data.</li>
+<li>Split the data into training and testing sets.</li>
+<li>Create a preprocessing recipe.</li>
+<li>Specify the model.</li>
+<li>Combine the recipe and model into a workflow.</li>
+<li>Fit the model.</li>
+<li>Evaluate the model using performance metrics.</li>
+<li>Tune or compare models if needed.</li>
+<li>Communicate results in a reproducible report.</li>
+</ol>
+<p>This structure matters because it reduces the chance of mistakes and
+makes the modeling process easier to explain.</p>
+<h2 id="prompt-3">Prompt</h2>
+<p>What is MLOps in the Machine Learning workflow? How does the
+<code>{vetiver}</code> package help with MLOps?</p>
+<h2 id="response-3">Response</h2>
+<p>MLOps stands for Machine Learning Operations. It refers to the
+process of managing machine learning models after they are created. This
+includes saving models, documenting them, deploying them, monitoring
+performance, and making sure they continue to work properly over
+time.</p>
+<p>The <code>{vetiver}</code> package helps with MLOps by making it
+easier to package, document, version, and deploy models. In a
+professional environment, it is not enough to build a model one time in
+a notebook. A model may need to be shared with others, used in an
+application, or monitored after deployment. <code>{vetiver}</code> helps
+bridge the gap between model development and model production.</p>
+<p>In digital marketing, MLOps could matter for models that predict
+customer churn, campaign performance, customer lifetime value, or lead
+quality. If these models are used for real decisions, they need to be
+documented and maintained instead of being treated as one-time
+experiments.</p>
+<h1 id="step-2-machine-learning-fundamentals">Step 2: Machine Learning
+Fundamentals</h1>
+<h2 id="prompt-4">Prompt</h2>
+<p>In Step 2, I introduced five short videos that last about 10 minutes.
+Each video explains important fundamental concepts in machine learning.
+For each video, list key concepts, define them, explain them, and state
+why the concepts matter in Machine Learning.</p>
+<h2 id="response-4">Response</h2>
+<div class="panel-tabset">
+<h3 id="a-gentle-introduction-to-machine-learning">A Gentle Introduction
+to Machine Learning</h3>
+<p>Machine learning is a method that allows computers to learn patterns
+from data instead of being directly programmed for every decision. A
+model uses input variables to make predictions or classifications.</p>
+<p>Important concepts include training data, testing data, features,
+labels, prediction, and model evaluation. These concepts matter because
+machine learning depends on learning from historical examples and
+applying those patterns to new situations.</p>
+<p>For example, in marketing, a model could learn from past customer
+behavior to predict which customers are likely to make a purchase.</p>
+<h3 id="cross-validation">Cross Validation</h3>
+<p>Cross validation is a method for evaluating how well a model may
+perform on new data. Instead of relying on one train-test split, cross
+validation divides the data into multiple parts and tests the model
+across different splits.</p>
+<p>This matters because one split of the data may accidentally make a
+model look better or worse than it really is. Cross validation provides
+a more reliable estimate of model performance.</p>
+<h3 id="the-confusion-matrix">The Confusion Matrix</h3>
+<p>A confusion matrix is a table that compares predicted classifications
+against actual classifications. It usually includes true positives, true
+negatives, false positives, and false negatives.</p>
+<p>This matters because accuracy alone can be misleading. A confusion
+matrix helps analysts understand what kinds of mistakes the model is
+making. In marketing, this could help evaluate whether a model is
+incorrectly identifying low-quality leads as high-quality leads.</p>
+<h3 id="sensitivity-and-specificity">Sensitivity and Specificity</h3>
+<p>Sensitivity measures how well a model identifies actual positive
+cases. Specificity measures how well a model identifies actual negative
+cases.</p>
+<p>These concepts matter because different machine learning problems
+have different costs for different types of errors. For example, in
+healthcare, missing a real illness may be more serious than a false
+alarm. In marketing, missing a valuable customer may mean lost revenue,
+while targeting the wrong customer may waste budget.</p>
+<h3 id="bias-and-variance">Bias and Variance</h3>
+<p>Bias refers to error from overly simple assumptions. Variance refers
+to error from a model being too sensitive to the training data. A
+high-bias model may underfit, while a high-variance model may
+overfit.</p>
+<p>This matters because the goal of machine learning is to build models
+that generalize well to new data. A good model balances bias and
+variance so it captures important patterns without memorizing noise.</p>
+</div>
+<h1 id="step-3-hands-on-modeling-practice">Step 3: Hands-On Modeling
+Practice</h1>
+<h1 id="section-5.4-practice-3.1-explore-base-r-modeling">Section 5.4
+Practice 3.1: Explore Base R Modeling</h1>
+<h2 id="prompt-5">Prompt</h2>
+<p>First, repeat the code given there to model the impact of car weight
+on mpg. Then use the <code>tidy()</code> function to see the estimates
+and other statistics in a tidy table. Also, use <code>glance()</code> to
+see the model statistics.</p>
+<h2 id="response-5">Response</h2>
+<p>```{r fit-simple-mpg} fit_simple &lt;- lm(mpg ~ wt, data =
+mtcars)</p>
+<p>tidy(fit_simple)</p>
+<p>glance(fit_simple)</p>
+<pre><code>
+I fit a simple linear regression model predicting miles per gallon (`mpg`) from vehicle weight (`wt`) using the `mtcars` dataset. The coefficient for weight is approximately **-5.34**, meaning that for every one-unit increase in vehicle weight, fuel efficiency decreases by about 5.34 miles per gallon on average.
+
+The `tidy()` function presents the model coefficients in a clean table format, including estimates, standard errors, t-statistics, and p-values. The weight variable is highly statistically significant, with a p-value far below .05.
+
+The `glance()` function provides model-level statistics. The simple model has an R-squared value of approximately **0.753**, meaning that vehicle weight alone explains about **75.3%** of the variation in fuel economy.
+
+## Prompt
+
+Use `augment()` and show what `augment()` does by printing out the first 10 rows of the data.
+
+## Response
+
+```{r augment-simple-mpg}
+augment(fit_simple) |&gt;
+  head(10)</code></pre>
+<p>The <code>augment()</code> function adds model outputs back onto the
+original dataset. It creates additional columns such as
+<code>.fitted</code>, <code>.resid</code>, <code>.hat</code>,
+<code>.sigma</code>, <code>.cooksd</code>, and <code>.std.resid</code>.
+This helps show the actual value, predicted value, and residual for each
+observation.</p>
+<h2 id="prompt-6">Prompt</h2>
+<p>Next, plot the residuals against the fitted values, as shown in the
+notebook. Interpret the plot in terms of homoskedasticity. Do you see a
+pattern? What would be an ideal pattern you look for in order to
+interpret a regression model meaningfully?</p>
+<h2 id="response-6">Response</h2>
+<p><code>{r residual-plot-simple} augment(fit_simple) |&gt;   ggplot(aes(x = .fitted, y = .resid)) +   geom_point(color = "#005030", alpha = 0.7) +   geom_hline(yintercept = 0, linetype = "dashed", color = "#FFB81C") +   labs(     title = "Fitted Values vs. Residuals",     x = "Fitted values",     y = "Residuals"   ) +   theme_minimal()</code></p>
+<p>The residual plot shows whether the errors are randomly distributed
+around zero. For a meaningful linear regression model, I would ideally
+want the residuals to look like a random cloud of points with a
+relatively equal spread across the fitted values.</p>
+<p>In this plot, the residuals appear generally centered around zero,
+but there may be some visible structure because <code>mpg</code> is
+influenced by more than just vehicle weight. If the residuals formed a
+clear funnel shape, that would suggest heteroskedasticity, meaning the
+error variance changes across fitted values. A random and even spread
+would support the assumption of homoskedasticity.</p>
+<h2 id="prompt-7">Prompt</h2>
+<p>Try adding <code>hp</code> and <code>cyl</code> to the model. Does R²
+improve? Does the residual plot look better or worse? What does that
+tell you?</p>
+<h2 id="response-7">Response</h2>
+<p>```{r fit-full-mpg} fit_mpg_full &lt;- lm(mpg ~ wt + hp + cyl, data =
+mtcars)</p>
+<p>tidy(fit_mpg_full)</p>
+<p>glance(fit_mpg_full)</p>
+<pre><code>
+```{r residual-plot-full}
+augment(fit_mpg_full) |&gt;
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_point(color = &quot;#005030&quot;, alpha = 0.7) +
+  geom_hline(yintercept = 0, linetype = &quot;dashed&quot;, color = &quot;#FFB81C&quot;) +
+  labs(
+    title = &quot;Fitted Values vs. Residuals: wt + hp + cyl Model&quot;,
+    x = &quot;Fitted values&quot;,
+    y = &quot;Residuals&quot;
+  ) +
+  theme_minimal()</code></pre>
+<p>After adding horsepower (<code>hp</code>) and number of cylinders
+(<code>cyl</code>) to the model, R-squared improves compared with the
+simple model using only vehicle weight. This means that horsepower and
+cylinders explain additional variation in fuel economy.</p>
+<p>The residual plot should also be evaluated to see whether the points
+look more randomly scattered around zero. If the residual pattern looks
+cleaner, it suggests that the expanded model is capturing more of the
+important structure in the data. This tells me that fuel efficiency is
+influenced by multiple vehicle characteristics, not just weight.</p>
+<h1 id="section-5.6-practice-3.2-fit-a-model-on-marketing-data">Section
+5.6 Practice 3.2: Fit a Model on Marketing Data</h1>
+<h2 id="create-marketing-data">Create Marketing Data</h2>
+<p>The professor’s notebook uses a dataset called
+<code>customer_data</code>. To make this report reproducible, I created
+a simulated marketing dataset with the same variables used in the
+practice prompt.</p>
+<p>```{r create-customer-data} set.seed(6100)</p>
+<p>customer_data &lt;- tibble( customer_id = 1:1000, tenure =
+sample(1:72, 1000, replace = TRUE), num_products = sample(1:6, 1000,
+replace = TRUE), region = sample(c(“East”, “Midwest”, “South”, “West”),
+1000, replace = TRUE), num_complaints = rpois(1000, lambda = 1.4),
+last_login_days = sample(0:90, 1000, replace = TRUE), monthly_spend = 83
++ 0.04 * tenure + 0.27 * num_products + if_else(region == “South”, 2.7,
+0) + if_else(region == “Midwest”, -1.0, 0) + if_else(region == “West”,
+1.2, 0) + -1.8 * num_complaints + -0.09 * last_login_days + rnorm(1000,
+mean = 0, sd = 25) )</p>
+<p>customer_data |&gt; head(10)</p>
+<pre><code>
+## Prompt
+
+Fit a linear model predicting `monthly_spend` from `tenure`, `num_products`, and `region`.
+
+## Response
+
+```{r fit-spend-basic}
+spend_fit &lt;- lm(
+  monthly_spend ~ tenure + num_products + region,
+  data = customer_data
+)
+
+tidy(spend_fit)
+
+summary(spend_fit)</code></pre>
+<p>I fit a linear model predicting monthly spending from customer
+tenure, number of products, and region. This model estimates how each
+predictor is associated with monthly spending while holding the other
+variables constant.</p>
+<h2 id="prompt-8">Prompt</h2>
+<p>Print out the model fit using the <code>tidy()</code> function. Also,
+print out the model fit using the <code>summary()</code> function. What
+is the difference?</p>
+<h2 id="response-8">Response</h2>
+<p>The <code>tidy()</code> function provides a clean table of
+coefficient-level results, including estimates, standard errors,
+t-statistics, and p-values. This format is easier to use in reports
+because it is structured like a data frame.</p>
+<p>The <code>summary()</code> function gives the traditional regression
+output. It includes coefficient results, residual summaries, R-squared,
+adjusted R-squared, the F-statistic, and overall model information. In
+other words, <code>tidy()</code> is cleaner for reporting, while
+<code>summary()</code> is more complete for statistical review.</p>
+<h2 id="prompt-9">Prompt</h2>
+<p>Interpret the significance of each independent variable on the
+monthly spend at an alpha level of .05.</p>
+<h2 id="response-9">Response</h2>
+<p>At an alpha level of .05, a predictor is considered statistically
+significant if its p-value is less than .05. In the professor’s example
+output, tenure, number of products, and region were not statistically
+significant because their p-values were greater than .05.</p>
+<p>This means we fail to reject the null hypothesis for those
+predictors. Based on that model, there is not enough evidence to
+conclude that tenure, number of products, or region have a statistically
+significant effect on monthly spending.</p>
+<h2 id="prompt-10">Prompt</h2>
+<p>Check overall model quality using the <code>glance()</code> function.
+What does the output tell you about the quality of the model?</p>
+<h2 id="response-10">Response</h2>
+<p><code>{r glance-spend-basic} glance(spend_fit)</code></p>
+<p>The <code>glance()</code> output provides model-level statistics such
+as R-squared, adjusted R-squared, sigma, AIC, BIC, and the overall model
+p-value. In the professor’s example, the R-squared value was
+approximately <strong>0.0036</strong>, which means the model explained
+less than one percent of the variation in monthly spending.</p>
+<p>A very low R-squared suggests weak model quality. It means that the
+predictors in the basic model are not doing a strong job explaining
+differences in customer spending.</p>
+<h2 id="prompt-11">Prompt</h2>
+<p>Visualize the residuals against the fitted values, as shown in the
+codebook. What does the pattern tell you about potential
+heteroskedasticity?</p>
+<h2 id="response-11">Response</h2>
+<p><code>{r residual-plot-spend-basic} augment(spend_fit) |&gt;   ggplot(aes(x = .fitted, y = .resid)) +   geom_point(alpha = 0.3, color = "#005030") +   geom_hline(yintercept = 0, linetype = "dashed", color = "#FFB81C") +   labs(     title = "Residuals: Monthly Spend Model",     x = "Fitted values ($)",     y = "Residuals"   ) +   theme_minimal()</code></p>
+<p>The residual plot helps evaluate whether the variance of the
+residuals is constant across fitted values. If the plot shows a random
+cloud of points around zero, that supports the assumption of
+homoskedasticity. If the plot shows a funnel or cone shape, that may
+suggest heteroskedasticity.</p>
+<p>For this model, the residuals should be interpreted alongside the low
+R-squared. Even if the residual spread does not show severe
+heteroskedasticity, the basic model still does not explain much of the
+variation in monthly spending.</p>
+<h2 id="prompt-12">Prompt</h2>
+<p>Add <code>num_complaints</code> and <code>last_login_days</code> as
+predictors. What happens to R²? Does every predictor appear significant?
+What might this tell you about the data generating process we used to
+simulate the data?</p>
+<h2 id="response-12">Response</h2>
+<p>```{r fit-spend-expanded} spend_fit_full &lt;- lm( monthly_spend ~
+tenure + num_products + region + num_complaints + last_login_days, data
+= customer_data )</p>
+<p>tidy(spend_fit_full)</p>
+<p>glance(spend_fit_full)</p>
+<pre><code>
+```{r residual-plot-spend-expanded}
+augment(spend_fit_full) |&gt;
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3, color = &quot;#005030&quot;) +
+  geom_hline(yintercept = 0, linetype = &quot;dashed&quot;, color = &quot;#FFB81C&quot;) +
+  labs(
+    title = &quot;Residuals: Expanded Monthly Spend Model&quot;,
+    x = &quot;Fitted values ($)&quot;,
+    y = &quot;Residuals&quot;
+  ) +
+  theme_minimal()</code></pre>
+<p>After adding <code>num_complaints</code> and
+<code>last_login_days</code>, R-squared should increase because the
+expanded model includes additional predictors that are more directly
+connected to customer behavior. However, not every predictor will
+necessarily appear statistically significant.</p>
+<p>This tells me that the data-generating process may be driven more
+strongly by some variables than others. In a simulated dataset, the
+variables that were built into the outcome formula should usually have
+stronger relationships with the dependent variable. In real-world
+marketing data, this reminds me that not every available variable is
+useful, and analysts need to evaluate which predictors actually improve
+model performance.</p>
+<h1 id="summary-table-of-modeling-practice">Summary Table of Modeling
+Practice</h1>
+<p><code>{r model-summary-table} tibble(   Model = c("mpg ~ wt", "mpg ~ wt + hp + cyl", "Basic marketing model", "Expanded marketing model"),   Purpose = c(     "Predict fuel efficiency from vehicle weight",     "Predict fuel efficiency from multiple vehicle characteristics",     "Predict monthly spend from tenure, products, and region",     "Predict monthly spend after adding complaints and login recency"   ) )</code></p>
+<h1 id="conclusion">Conclusion</h1>
+<p>This assignment helped me understand that machine learning is not
+only about fitting models. It is also about understanding concepts such
+as cross validation, confusion matrices, sensitivity, specificity, bias,
+and variance. These ideas help analysts evaluate whether a model is
+useful and trustworthy.</p>
+<p>The hands-on practice also helped me see how regression models can be
+evaluated using coefficients, R-squared, residual plots, and model
+diagnostics. Quarto makes this process stronger because it allows me to
+combine code, output, interpretation, and reflection in one professional
+report.</p>
+<section id="final-reflection" class="callout-important">
+<h2>Final Reflection</h2>
+<p>For my career in digital marketing analytics, these skills are useful
+because marketing decisions often depend on models, forecasts, and
+performance analysis. A reproducible workflow helps make those decisions
+more transparent and reliable.</p>
+</section>
+<h1 id="submission-links">Submission Links</h1>
+<p>After publishing this project, paste the links below into the Word
+document for Canvas submission.</p>
+<ul>
+<li>GitHub Repo URL: <code>PASTE YOUR GITHUB REPO URL HERE</code></li>
+<li>GitHub Pages URL: <code>PASTE YOUR GITHUB PAGES URL HERE</code></li>
+</ul>
+</body>
+</html>
