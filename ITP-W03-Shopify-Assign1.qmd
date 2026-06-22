@@ -1,0 +1,130 @@
+---
+title: "ITP-W03-Shopify Store - Assignment 1 - Shopify Orientation and Admin Exploration"
+author: "Mickey Shawel"
+date: today
+format: 
+  html: 
+    theme: cosmo
+    toc: true
+    toc-depth: 4
+    toc-expand: 2
+    number-sections: true
+    code-link: true
+    code-tools: true
+    code-overflow: wrap
+    embed-resources: true
+editor: visual
+execute: 
+  freeze: auto
+  echo: false
+  warning: false
+  message: false
+---
+
+# Introduction
+
+> This report documents my completion of the Shopify orientation learning activities and my initial exploration of the Shopify admin area.
+
+The purpose of this assignment is to become familiar with Shopify as a major e-commerce platform before building a larger practice retail store and connecting analytics tools such as GA4. This report also connects Shopify concepts to the CPP Farm Store consulting project.
+
+::: callout-note
+## Assignment Context
+
+This Shopify practice store is for learning and academic purposes only. I am not selling real products, processing real payments, or operating a real business.
+:::
+
+# Evidence of Shopify Learning Completion
+
+## Assigned Learning Materials
+
+The assigned Shopify learning materials included:
+
+-   Introduction to Shopify
+-   Navigating the Shopify Admin
+-   Developing on Shopify
+-   Shopify Admin Guided Tour
+
+## Completion Evidence
+
+Insert your screenshot, certificate, completion page, or notes below.
+
+::: callout-tip
+## Screenshot Placeholder
+
+Replace the placeholder below with your actual screenshot after completing the Shopify Academy or instructor-provided learning materials.
+:::
+
+![Evidence of Shopify learning completion.](images/shopify-learning-completion 1.png){#fig-learning}
+
+As shown in @fig-learning, this section provides evidence that I completed or reviewed the assigned Shopify learning materials.
+
+# Shopify Admin Exploration Screenshot
+
+The Shopify admin is the main control center where store owners manage products, orders, customers, analytics, marketing, discounts, apps, and online store settings.
+
+Insert your Shopify admin screenshot below.
+
+![Screenshot of Shopify admin dashboard.](images/shopify-admin-screenshot 1.png){#fig-admin}
+
+As shown in @fig-admin, I accessed the Shopify admin area and explored the main navigation sections.
+
+# Feature Reflection
+
+This section identifies important Shopify features for online retailing and explains why each feature matters.
+
+## Shopify Retail Features
+
+| Shopify Feature | Why It Matters for Online Retailing |
+|------------------------------------|------------------------------------|
+| Products | Products are the core items being sold. Shopify allows retailers to manage titles, descriptions, images, prices, variants, inventory, and product status. |
+| Collections | Collections organize products into groups such as seasonal items, best sellers, product categories, or promotional campaigns. |
+| Themes | Themes control the design and layout of the online store. A strong theme helps improve branding, navigation, and conversion. |
+| Navigation | Navigation menus help customers move through the store, find products, browse categories, and access important pages. |
+| Orders | The orders section helps the business process purchases, manage fulfillment, review payment status, and track customer transactions. |
+| Customers | The customers section stores customer profiles, purchase history, contact information, and segmentation opportunities. |
+| Analytics | Analytics provide insight into sales, traffic, conversion rate, customer behavior, and store performance. |
+| Marketing | Shopify marketing tools support campaigns, promotions, email, social commerce, and channel-based growth. |
+| Discounts | Discounts help retailers create promotions such as percentage-off deals, free shipping, loyalty rewards, and seasonal offers. |
+| Apps | Apps extend Shopify by adding features such as reviews, loyalty programs, email marketing, analytics, automation, and integrations. |
+
+## Most Important Features
+
+::: panel-tabset
+### Products
+
+The products section is one of the most important areas of Shopify because it controls what customers see and purchase. Product pages usually include images, prices, descriptions, inventory, variants, and fulfillment information.
+
+### Collections
+
+Collections are important because they shape the shopping experience. For example, a retailer can create collections for seasonal products, student favorites, gift boxes, or local goods.
+
+### Themes
+
+Themes affect how professional and trustworthy the store feels. A strong theme can improve customer engagement by making the website easier to navigate and more visually consistent with the brand.
+
+### Analytics
+
+Analytics help store owners understand what is working. Retailers can review sales, sessions, conversion rate, top products, and customer behavior.
+
+### Discounts
+
+Discounts support retail promotions and customer retention. They can be used for seasonal campaigns, loyalty rewards, first-time buyers, or special events.
+:::
+
+# CPP Farm Store Reflection
+
+Shopify could support CPP Farm Store or a similar local retail business by organizing products, collections, online orders, inventory, customer information, promotions, and store content in one platform. For CPP Farm Store, Shopify could help highlight seasonal produce, student-grown products, gift boxes, local goods, and loyalty program offers. It could also support future marketing efforts through Google Merchant Center, GA4 tracking, email campaigns, customer feedback forms, and promotional landing pages. This would allow the Farm Store to improve its online customer journey while connecting in-store retail activity with digital engagement.
+
+::: callout-important
+## Consulting Connection
+
+For the CPP Farm Store project, Shopify can serve as the e-commerce foundation while additional tools such as Clover, Typeform, GA4, Looker Studio, and Google Merchant Center support operations, customer research, analytics, and retail media strategy.
+:::
+
+# Appendix
+
+## Links
+
+-   [GitHub Repository](https://github.com/mjshawell/IBM-6540-IBM-6300)
+
+-   [Published GitHub Pages Report](https://mjshawell.github.io/IBM-6540-IBM-6300/)
