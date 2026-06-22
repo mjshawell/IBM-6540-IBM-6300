@@ -1,20 +1,19 @@
-# W02-ML-Fundamentals
+# ITP-W03 Shopify Store - Assignment 1
 
-This RStudio/Quarto project contains the W02 Reflection on Fundamentals of Machine Learning assignment.
+This RStudio/Quarto project contains a completed assignment template for:
+
+**Shopify Orientation and Admin Exploration**
 
 ## Files
 
-- `W02-ML-Fundamentals.Rproj` — open this first in RStudio.
-- `Mickyas-Shawel-W02-ML-Fundamentals.qmd` — main Quarto source file.
-- `Mickyas-Shawel-W02-ML-Fundamentals.html` — rendered HTML report.
-- `W02_Submission_Links.docx` — document for Canvas submission with placeholders for GitHub repo and GitHub Pages links.
+- `ITP-W03-Shopify-Assign1.qmd` — main Quarto report
+- `ITP-W03-Shopify-Assign1.Rproj` — RStudio project file
+- `images/` — screenshot placeholders
 
-## How to use
+## To Use
 
-1. Unzip the folder.
-2. Open `W02-ML-Fundamentals.Rproj` in RStudio.
-3. Open the `.qmd` file.
-4. Click **Render** to generate the HTML report.
-5. Push the folder to GitHub.
-6. Publish the HTML with GitHub Pages.
-7. Add your final GitHub Repo URL and GitHub Pages URL to `W02_Submission_Links.docx`.
+1. Open `ITP-W03-Shopify-Assign1.Rproj` in RStudio.
+2. Replace the two placeholder images in the `images/` folder with your real screenshots.
+3. Update the GitHub Repository and GitHub Pages links in the Appendix.
+4. Render the `.qmd` file to HTML.
+5. Submit both the `.qmd` and `.html` files to Canvas.
