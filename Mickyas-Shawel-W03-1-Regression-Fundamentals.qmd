@@ -1,0 +1,388 @@
+---
+title: "W03-1: Reflection on Regression and Ch5 (Spending Our Data)"
+author: "Mickyas Shawel"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-expand: 1
+    toc-location: right-body
+    toc-title: "Contents"
+    number-sections: true
+    code-fold: show
+    code-tools: true
+    theme: cosmo
+    highlight-style: github
+    df-print: paged
+    embed-resources: true
+execute:
+  warning: false
+  message: false
+  freeze: true
+---
+
+# Introduction
+
+::: callout-note
+## Purpose of this report
+
+This reflection summarizes what I learned about regression fundamentals, R-squared, regression output interpretation, multiple regression, regression assumptions, and hands-on practice with the `customer_data` dataset.
+:::
+
+Regression is one of the most important tools in data analysis because it helps analysts understand how one or more independent variables relate to a dependent variable. In marketing and business analytics, regression can help evaluate questions such as whether advertising spend increases sales, whether customer tenure predicts monthly spending, and whether customer behavior can help explain churn.
+
+# Step 1-1: Regression Fundamentals
+
+**What is the goal of linear regression and why do we call it linear regression?**
+
+The goal of linear regression is to model the relationship between a dependent variable and one or more independent variables. In simple linear regression, the model estimates the relationship between one predictor and one outcome. In multiple regression, the model uses two or more predictors to explain or predict the outcome.
+
+We call it **linear regression** because the model is linear in its parameters. This means the model is built by adding together coefficient terms, such as an intercept and slope coefficients.
+
+$$
+Y = \beta_0 + \beta_1X + \epsilon
+$$
+
+**What is residual?**
+
+A residual is the difference between the actual observed value and the value predicted by the regression model.
+
+$$
+Residual = y_i - \hat{y_i}
+$$
+
+The residual tells us how far off the model prediction was for a specific observation.
+
+**When statistical software determines the best-fitting line for a set of data points, it uses an algorithm specified by the developers. How does it do it? Elaborate on the algorithm.**
+
+Statistical software usually uses the **ordinary least squares** algorithm. The main idea is to choose the intercept and slope values that minimize the total squared residuals. The software calculates predictions, measures residuals, squares those residuals, adds them together, and finds the line with the smallest possible total.
+
+$$
+\sum_{i=1}^{n}(y_i - \hat{y_i})^2
+$$
+
+This is why the fitted regression line is often called the **least squares line**.
+
+# Step 1-2: Meaning of R-Squared
+
+**What is R-Squared?**
+
+R-squared measures how much of the variation in the dependent variable is explained by the regression model. If a model has an R-squared value of 0.75, then approximately 75% of the variation in the dependent variable is explained by the model.
+
+**How do you calculate R-squared? In other words, write a formula.**
+
+$$
+R^2 = 1 - \frac{SS_{Residual}}{SS_{Total}}
+$$
+
+Another way to think about it is:
+
+$$
+R^2 = \frac{SS_{Total} - SS_{Residual}}{SS_{Total}}
+$$
+
+**What is the variation around the mean?**
+
+The variation around the mean is the total amount of variation in the dependent variable before using the regression model.
+
+$$
+SS_{Total} = \sum_{i=1}^{n}(y_i - \bar{y})^2
+$$
+
+**What is the variation around the regression line?**
+
+The variation around the regression line is the unexplained variation after the model has made predictions.
+
+$$
+SS_{Residual} = \sum_{i=1}^{n}(y_i - \hat{y_i})^2
+$$
+
+**What is variation around the mean - variation around the line**?
+
+The difference between the variation around the mean and the variation around the regression line represents the amount of variation explained by the regression model.
+
+$$
+SS_{Explained} = SS_{Total} - SS_{Residual}
+$$
+
+**What is the relationship between R and R-Squared?**
+
+In simple linear regression, $R$ is the correlation between observed values and predicted values, and $R^2$ is the square of that correlation. For example, if $R = 0.80$, then $R^2 = 0.64$.
+
+# Step 1-3: Implementing Linear Regression in R
+
+**What does the t-test do in the output? Answer this using the null hypothesis.**
+
+The t-test evaluates whether an individual regression coefficient is statistically different from zero.
+
+$$
+H_0: \beta_i = 0
+$$
+
+If the p-value is less than 0.05, we reject the null hypothesis and conclude that the predictor is statistically significant.
+
+**What does the F-test do in the output? Answer this using the null hypothesis.**
+
+The F-test evaluates whether the overall regression model is statistically significant.
+
+$$
+H_0: \beta_1 = \beta_2 = \cdots = \beta_k = 0
+$$
+
+The alternative hypothesis is that at least one slope coefficient is not equal to zero.
+
+**Let's suppose you ran a simple regression with only a single independent variable. You find the independent variable's slope coefficient has a t-value of 1.97 with a p-value of 0.048. What is your conclusion about the statistical significance of the independent variable?**
+
+At an alpha level of 0.05, the independent variable is statistically significant because 0.048 is less than 0.05.
+
+**What would be the F-statistic?**
+
+In simple linear regression, the F-statistic equals the square of the t-statistic.
+
+$$
+F = t^2 = 1.97^2 = 3.8809
+$$
+
+So the F-statistic would be approximately **3.88**.
+
+**What would be your conclusion about the overall model's significance based on the F-statistic?**
+
+Because this is simple regression with one independent variable, the F-test and t-test lead to the same conclusion. The overall model is statistically significant at the 0.05 level.
+
+# Step 2-1: Multiple Regression
+
+**How is multiple regression an extension of simple linear regression?**
+
+Multiple regression extends simple linear regression by adding more than one independent variable.
+
+$$
+Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \cdots + \beta_kX_k + \epsilon
+$$
+
+Simple regression fits a line. Multiple regression fits a plane or higher-dimensional surface.
+
+**Explain what changes when we move from one independent variable to two or more independent variables.**
+
+Each coefficient becomes a partial effect. This means each predictor is interpreted while holding the other predictors constant.
+
+**Why is adjusted R-Squared often preferred over regular R-Squared in multiple regression?**
+
+Adjusted R-squared is preferred because regular R-squared usually increases when predictors are added, even if they do not meaningfully improve the model. Adjusted R-squared penalizes unnecessary complexity.
+
+**Explain what the adjusted R-squared is trying to protect us from.**
+
+Adjusted R-squared protects us from overfitting and from assuming a model is better only because it has more variables.
+
+**Why is it not enough to say, “The multiple regression model has a higher R-Squared, so it is automatically better”? Explain what else we need to consider.**
+
+A higher R-squared does not automatically mean a better model. We also need to consider adjusted R-squared, model comparison tests, residual diagnostics, theory, interpretability, and whether the added variables are worth collecting.
+
+**What does it mean if adding tail length increases R2, but the model comparison F-test is not statistically significant?**
+
+It means the model may explain slightly more variation, but the improvement is not large enough to justify adding the new variable.
+
+**Is it possible to observe that t-tests for a few independent variables are statistically significant but that the overall model is not significant? Explain it by writing out the null hypotheses that each test tries to test.**
+
+It is unusual, but it can happen in some modeling situations due to sampling variability, small samples, multicollinearity, or model specification issues. The individual t-test evaluates one coefficient at a time:
+
+$$
+H_0: \beta_i = 0
+$$
+
+The F-test evaluates all slope coefficients jointly:
+
+$$
+H_0: \beta_1 = \beta_2 = \cdots = \beta_k = 0
+$$
+
+**If a multiple regression model has a statistically significant F-test, does that mean every independent variable in the model is important? Why or why not?**
+
+No. A significant F-test only means that at least one independent variable is related to the dependent variable. Some variables may still be statistically insignificant.
+
+# Step 2-2: Running Regression Models in R
+
+**Before fitting a regression model, why is it useful to plot the variables?**
+
+Plotting variables helps us inspect relationships, outliers, nonlinearity, and potential multicollinearity before fitting a model.
+
+**Explain the difference between simple regression and multiple regression using the mouse example.**
+
+In the mouse example, simple regression predicts mouse size using weight. Multiple regression predicts mouse size using both weight and tail length.
+
+**Why should adjusted R-Squared be considered when evaluating a multiple regression model?**
+
+Adjusted R-squared accounts for the number of predictors and helps determine whether added predictors truly improve the model.
+
+**If adding tail length does not significantly improve the model, what does that imply for data collection and model selection?**
+
+It suggests that collecting tail length may not be worth the time or effort. A simpler model may be preferred if it performs nearly as well.
+
+# Step 3: Six Regression Model Assumptions
+
+**Suppose a company studies whether advertising spending increases sales. A simple model might show that if b1 is positive, we might conclude that advertising increases sales. But what if the company spends more on advertising during peak seasons, holidays, or in markets where demand is already high? Then the model may be conflating the effect of advertising with that of seasonality, market demand, promotions, or brand strength. What assumption is most likely an issue here?**
+
+The assumption most likely violated is **exogeneity**, specifically **omitted variable bias**. If seasonality, demand, promotions, or brand strength affect both advertising spending and sales, then advertising is correlated with the error term. This makes the advertising coefficient unreliable for causal interpretation.
+
+## 
+
+**For the rest of the assumptions, provide a case where each of the rest of the assumptions can be an issue, and elaborate on your point. Still use the same scenario above—advertising's effect on sales—as a broad basis for your response.**
+
+| Assumption | Advertising and Sales Example | Why It Matters |
+|------------------------|------------------------|------------------------|
+| Linearity / Functional Form | Sales may rise with advertising at first but eventually plateau because of diminishing returns. | A straight-line model may miss the curved relationship. |
+| Homoskedasticity | Large markets may have much larger sales variation than small markets. | Unequal error variance can make standard errors unreliable. |
+| Independent Errors | Sales this month may be related to sales last month. | Time-based correlation can make standard errors unreliable. |
+| Normality of Errors | A viral campaign or unexpected holiday promotion may create extreme residuals. | Non-normal residuals can affect inference, especially in small samples. |
+| No Multicollinearity | TV, search, social, and display budgets may rise and fall together. | Highly correlated predictors make it difficult to isolate each channel's effect. |
+
+::: callout-warning
+## Key idea
+
+Regression assumptions do not only affect math. They affect whether we can trust the story we tell from the model.
+:::
+
+# Step 4: Section 9 Exercises
+
+```{r setup}
+library(tidyverse)
+library(broom)
+library(tidymodels)
+
+set.seed(42)
+n <- 1000
+
+customer_data <- tibble(
+  customer_id = 1:n,
+  tenure = sample(1:60, n, replace = TRUE),
+  monthly_spend = round(rnorm(n, mean = 85, sd = 25), 2),
+  num_products = sample(
+    1:5,
+    n,
+    replace = TRUE,
+    prob = c(0.3, 0.3, 0.2, 0.1, 0.1)
+  ),
+  num_complaints = rpois(n, lambda = 0.5),
+  last_login_days = sample(1:90, n, replace = TRUE),
+  region = sample(
+    c("West", "East", "South", "Midwest"),
+    n,
+    replace = TRUE
+  ),
+  churn = factor(
+    ifelse(
+      0.05*num_complaints +
+      0.02*last_login_days -
+      0.015*tenure -
+      0.005*monthly_spend +
+      rnorm(n,0,0.5) > 0.3,
+      "yes",
+      "no"
+    )
+  )
+)
+
+glimpse(customer_data)
+
+```
+
+::: callout-important
+## Note
+
+The code below uses the course notebook Ch-5 dataset called `customer_data`.
+:::
+
+## Exercise 1 — Broom Practice
+
+Using the `customer_data` dataset before splitting, fit a linear regression predicting `monthly_spend` from `tenure`, `num_products`, and `region`. Use `tidy()` to extract coefficients. Which predictors are significant at the 0.05 level? Use `glance()` to check R2. Is the model a good fit? Use `augment()` and `ggplot2` to create a residual plot. Do you see any patterns?
+
+```{r exercise-1-model}
+spend_model <- lm(
+  monthly_spend ~ tenure + num_products + region,
+  data = customer_data
+)
+
+tidy(spend_model)
+
+glance(spend_model)
+```
+
+Based on the notebook output, none of the predictors were statistically significant at the 0.05 level. The R-squared value was approximately **0.0036**, which means the model explains less than one percent of the variation in monthly spending. This is a weak fit.
+
+```{r exercise-1-residual-plot}
+augment(spend_model) |>
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.3, color = "#005030") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "#FFB81C") +
+  labs(
+    title = "Residuals: Monthly Spend Model",
+    x = "Fitted values ($)",
+    y = "Residuals"
+  ) +
+  theme_minimal()
+```
+
+The residual plot should ideally show a random cloud of points around zero. If there is no strong funnel shape or curve, then there is not obvious evidence of severe heteroskedasticity or nonlinearity.
+
+## Exercise 2 — Data Splitting
+
+Using the `customer_data` dataset, create a 70/30 stratified split on `churn`. Verify that the churn rate is similar in both sets. Check whether the distribution of `last_login_days` looks similar in training and testing.
+
+```{r exercise-2-split}
+ex2_split <- initial_split(customer_data, prop = 0.70, strata = churn)
+
+ex2_train <- training(ex2_split)
+ex2_test <- testing(ex2_split)
+
+ex2_train |> 
+  count(churn) |> 
+  mutate(pct = n / sum(n))
+
+ex2_test |> 
+  count(churn) |> 
+  mutate(pct = n / sum(n))
+```
+
+A stratified split is used so the churn rate remains similar in the training and testing datasets.
+
+```{r exercise-2-last-login-plot}
+bind_rows(
+  ex2_train |> mutate(split = "Training"),
+  ex2_test |> mutate(split = "Testing")
+) |>
+  ggplot(aes(x = last_login_days)) +
+  geom_histogram(bins = 30, alpha = 0.6) +
+  facet_wrap(~ split, ncol = 1) +
+  labs(
+    title = "Distribution of Last Login Days by Split",
+    x = "Last Login Days",
+    y = "Count"
+  ) +
+  theme_minimal()
+```
+
+The distributions of `last_login_days` should look similar between the training and testing sets.
+
+## Exercise 3 — Critical Thinking
+
+**A colleague says: “I looked at the test set to understand the data better before modeling. I did not fit any models on it.” Is this a problem? Why or why not?**
+
+Yes, this is a problem because looking at the test set can create information leakage. The test set should remain untouched until the final evaluation so it can represent truly unseen data.
+
+**You are building a fraud detection model. Only 0.1% of transactions are fraudulent. Why is stratified splitting especially important here?**
+
+Stratified splitting is important because fraud is extremely rare. Without stratification, one dataset may contain too few fraud cases to train or evaluate the model properly.
+
+**A model achieves 92% accuracy on the training set and 61% accuracy on the test set. What does this tell you? What would you do next?**
+
+This large gap suggests over fitting. I would try a simpler model, use cross-validation, apply regularization, check for data leakage, and evaluate whether the features are too specific to the training sample.
+
+# Appendix
+
+## GitHub Pages Report:
+
+[Published report on GitHub Pages](https://mjshawell.github.io/IBM-6540-IBM-6300/)
+
+## GitHub Repository:
+
+[GitHub Repository](https://github.com/mjshawell/IBM-6540-IBM-6300)
