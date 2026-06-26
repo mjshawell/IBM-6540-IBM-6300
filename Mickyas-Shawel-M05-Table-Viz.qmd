@@ -1,0 +1,244 @@
+---
+title: "M05-Visualizing Data with Tables"
+author: "Mickey Shawel"
+date: "`r format(Sys.time())`"
+format: 
+  html: 
+    theme: cosmo
+    toc: true
+    toc-depth: 4
+    toc-expand: 2
+    number-sections: true
+    code-link: true
+    code-tools: true
+    code-overflow: wrap
+    embed-resources: true
+editor: visual
+execute: 
+  freeze: auto
+  echo: true
+  warning: false
+  message: false
+---
+
+# Introduction
+
+> This report reflects on how tables can be used as a form of data visualization and demonstrates how the `gt` and `gtExtras` packages can create polished, reader-friendly tables in R.
+
+In this assignment, I summarize what I learned from the assigned videos, explain how tables complement charts, and create a descriptive statistics table using synthetic marketing data. The goal is to demonstrate that tables are not only containers for numbers, but also visual communication tools that can guide the reader toward important patterns.
+
+::: callout-note
+## Assignment focus
+
+This report uses Quarto, `gt`, and `gtExtras` to combine written reflection, data wrangling, descriptive statistics, and table-based visualization in one HTML report.
+:::
+
+# Essay Reflection
+
+## Summarize what you learned from the videos you watched.
+
+The videos emphasized that tables should be treated as a form of data visualization rather than as plain data output. From the conversation with Tom Mock, I learned that effective tables guide the reader's eye by using clear headers, subtle dividers, thoughtful alignment, appropriate precision, and selective highlighting. A table should make it easy for the reader to understand what matters without forcing them to decode unnecessary clutter.
+
+I also learned that data used for analysis and data used for presentation may need to be structured differently. In the tidyverse, long and tidy data is often best for analysis, but wider or grouped tables may be better for communication. This helped me understand that presentation tables sometimes require reshaping data to make the story clearer.
+
+The second video introduced `gtExtras`, which extends the `gt` package by making it easier to create polished tables with themes, summary tables, and inline graphics. I especially liked the use of functions such as `gt_plt_summary()` and `gt_plt_dist()` because they allow tables to include small visual elements such as distributions directly inside cells. This makes the table more informative while still preserving exact numerical values.
+
+## What did you like about the `gt` and `gtExtras` packages demonstrated in the videos?
+
+I liked that `gt` gives users detailed control over how a table looks. For example, functions such as `tab_header()`, `tab_spanner()`, `cols_label()`, `tab_source_note()`, `tab_footnote()`, `fmt_number()`, `fmt_currency()`, and `tab_style()` allow the table creator to decide how the reader should experience the information. This is useful because a table can be designed around a specific communication goal instead of simply displaying raw output.
+
+I also liked that `gtExtras` saves time and adds visual polish. Instead of manually writing many lines of formatting code, `gtExtras` provides themes and visualization helpers that can make tables look professional quickly. The ability to insert distribution plots, sparklines, and summary visuals into tables is especially helpful for marketing analytics because it allows a report to show both exact numbers and visual patterns in a compact format.
+
+## How do tables complement charts for data visualization?
+
+Tables complement charts because they provide exact values, while charts are often better for showing overall patterns, trends, and relationships. A chart can quickly show whether a metric is increasing, decreasing, or different across groups, but a table allows the reader to inspect the specific numbers behind the pattern. In a business report, both are valuable because charts help communicate the big picture while tables provide evidence and detail.
+
+For example, a bar chart might show that email has the highest conversion rate across channels, but a table can show the exact conversion rate, average order value, revenue, and customer satisfaction score for each channel. This makes tables useful when the audience needs precision, comparison, and supporting details.
+
+## Under what circumstances would you prefer to use tables rather than charts to visualize data?
+
+I would prefer tables when the audience needs to compare exact values across categories or when there are multiple metrics that need to be reviewed together. Tables are also useful when the dataset includes key performance indicators such as revenue, conversion rate, average order value, customer satisfaction, and repeat purchase rate. These metrics can be difficult to show clearly in one chart, but they can be organized effectively in a table.
+
+I would also use tables when preparing written reports, dashboards, or presentation appendices where decision-makers may want to verify specific numbers. For example, in a marketing analytics or MSDM project, a table can summarize customer segments, campaign channels, or product categories while still allowing the reader to see exact performance differences.
+
+# Data Demonstration with `gt` and `gtExtras`
+
+## Use the synthetic data introduced this week for the lecture. Pick some variables of your interest from the data and share some descriptive statistics using `gt` and `gtExtras` functions together to show numbers and small charts in one table.
+
+The following section uses synthetic marketing data to demonstrate how `gt` and `gtExtras` can create a professional table. I grouped the data by marketing channel because channel-level performance is a common topic in digital marketing analytics and is relevant to MSDM projects.
+
+## Load packages
+
+```{r}
+library(tidyverse)
+library(gt)
+library(gtExtras)
+```
+
+## Use synthetic data
+
+```{r}
+# ── Synthetic direct-mail dataset ──────────────────────────────────────────────
+set.seed(123)
+n <- 3000
+
+mail_data <- tibble(
+  customer_id = paste0("C", str_pad(1:n, 5, pad = "0")),
+  age = round(rnorm(n, mean = 45, sd = 12)),
+  income = round(rlnorm(n, meanlog = 10.8, sdlog = 0.6)), # right-skewed
+  recency_days = round(rexp(n, rate = 1 / 60)), # days since last purchase
+  freq_12mo = rpois(n, lambda = 3), # purchases in 12 months
+  avg_order_amt = round(rlnorm(n, meanlog = 4.2, sdlog = 0.5), 2),
+  channel = sample(
+    c("email", "direct_mail", "digital"),
+    n,
+    replace = TRUE,
+    prob = c(0.5, 0.3, 0.2)
+  ),
+  region = sample(
+    c("West", "South", "Midwest", "Northeast"),
+    n,
+    replace = TRUE
+  ),
+  loyalty_tier = sample(
+    c("Bronze", "Silver", "Gold", "Platinum"),
+    n,
+    replace = TRUE,
+    prob = c(0.4, 0.3, 0.2, 0.1)
+  ),
+  responded = rbinom(
+    n,
+    1,
+    prob = plogis(
+      -3 +
+        0.02 * (age - 45) +
+        0.3 * log(income / 50000) +
+        0.1 * freq_12mo -
+        0.005 * recency_days
+    )
+  )
+) |>
+  mutate(
+    income = if_else(runif(n) < 0.08, NA_real_, income),
+    avg_order_amt = if_else(runif(n) < 0.05, NA_real_, avg_order_amt),
+    responded = factor(responded, levels = c(1, 0), labels = c("yes", "no"))
+  )
+
+glimpse(mail_data)
+```
+
+::: callout-tip
+## Why channel?
+
+Grouping by marketing channel makes the table useful for comparing acquisition sources. This mirrors real direct-mail and retail marketing questions such as which channel attracts higher-value customers, stronger response behavior, or more frequent purchasing.
+:::
+
+## Summary table with inline distribution graphics
+
+```{r}
+channel_summary <- mail_data |>
+  group_by(channel) |>
+  summarize(
+    customers = n(),
+    avg_income = mean(income, na.rm = TRUE),
+    median_order_value = median(avg_order_amt, na.rm = TRUE),
+    avg_frequency = mean(freq_12mo, na.rm = TRUE),
+    avg_recency_days = mean(recency_days, na.rm = TRUE),
+    response_rate = mean(responded == "yes"),
+    order_distribution = list(na.omit(avg_order_amt)),
+    .groups = "drop"
+  ) |>
+  arrange(desc(response_rate))
+
+channel_summary
+```
+
+```{r}
+channel_summary |>
+  gt(rowname_col = "channel") |>
+  gt_plt_dist(order_distribution) |>
+  tab_header(
+    title = md("**Synthetic Direct-Mail Channel Performance**"),
+    subtitle = "Descriptive statistics by channel with inline average order amount distributions"
+  ) |>
+  tab_stubhead(label = "Marketing Channel") |>
+  tab_spanner(
+    label = "Customer Volume",
+    columns = c(customers)
+  ) |>
+  tab_spanner(
+    label = "Financial Metrics",
+    columns = c(avg_income, median_order_value, order_distribution)
+  ) |>
+  tab_spanner(
+    label = "Behavioral Metrics",
+    columns = c(avg_frequency, avg_recency_days, response_rate)
+  ) |>
+  cols_label(
+    customers = "Customers",
+    avg_income = "Avg. Income",
+    median_order_value = "Median Order Value",
+    avg_frequency = "Avg. Purchases",
+    avg_recency_days = "Avg. Recency Days",
+    response_rate = "Response Rate",
+    order_distribution = "Order Amount Distribution"
+  ) |>
+  fmt_currency(
+    columns = c(avg_income, median_order_value),
+    currency = "USD",
+    decimals = 2
+  ) |>
+  fmt_number(
+    columns = c(avg_frequency, avg_recency_days),
+    decimals = 2
+  ) |>
+  fmt_percent(
+    columns = c(response_rate),
+    decimals = 2
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "#F8F4EC"),
+      cell_text(weight = "bold")
+    ),
+    locations = cells_body(
+      columns = response_rate,
+      rows = response_rate == max(response_rate)
+    )
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels(everything())
+  ) |>
+  tab_footnote(
+    footnote = "The highlighted cell identifies the channel with the highest response rate.",
+    locations = cells_body(
+      columns = response_rate,
+      rows = response_rate == max(response_rate)
+    )
+  ) |>
+  tab_source_note(
+    source_note = "Source: Synthetic direct-mail dataset created for M05 table visualization practice."
+  ) |>
+  gt_theme_guardian()
+```
+
+# Interpretation of the Table
+
+The table summarizes customer performance by marketing channel and combines exact descriptive statistics with a small distribution graphic. The financial metrics show how average income and median order value differ by channel, while the behavioral metrics show differences in purchase frequency, recency, and response rate. The inline distribution chart adds context by showing whether average order amounts are tightly grouped or spread out within each channel.
+
+The use of formatting also improves readability. Currency formatting makes financial metrics easier to interpret, percent formatting clarifies the response rate, the spanner labels organize related variables, and the highlighted cell directs attention to the strongest channel for response performance.
+
+# MSDM Project Application
+
+##  Explain why the table is worth adding to your MSDM project written report or presentation slides.
+
+This table would be worth adding to an MSDM project report or presentation because it summarizes several important marketing performance indicators in one compact visual. Instead of presenting separate charts for income, order value, purchase frequency, recency, and response rate, this table combines exact values with a small chart that shows distribution. This makes it useful for decision-makers who need both high-level patterns and precise numbers.
+
+For another project such as for my CPP Farm Store consulting project, a similar table could compare customer segments, traffic sources, product categories, direct-mail audiences, or campaign channels. For example, the Farm Store team could use a table like this to compare online shoppers, in-store shoppers, loyalty members, and non-loyalty customers. This would help identify which groups generate the most value and where marketing or loyalty efforts should be focused.
+
+# GitHub Page Submission
+
+-   [Published GitHub Page](https://mjshawell.github.io/IBM-6540-IBM-6300/)
+
+-   [GitHub Repository](https://github.com/mjshawell/IBM-6540-IBM-6300)
