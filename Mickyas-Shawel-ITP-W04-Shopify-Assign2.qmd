@@ -1,0 +1,204 @@
+---
+title: "ITP-W04-Shopify Store - Assignment 2 - Store Concept and Initial Shopify Setup"
+author: "Mickyas Shawel"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-expand: 2
+    number-sections: true
+    code-link: true
+    code-tools: true
+    code-overflow: wrap
+    embed-resources: true
+    theme: cosmo
+editor: visual
+execute:
+  freeze: auto
+  echo: false
+  warning: false
+  message: false
+---
+
+```{=html}
+<style>
+:root {
+  --farm-green: #0b4a33;
+  --farm-green-2: #203c26;
+  --farm-tan: #bf9568;
+  --farm-brown: #4e3a32;
+  --farm-cream: #f7f2ea;
+  --farm-border: #ded2c4;
+}
+
+body {
+  color: var(--farm-brown);
+}
+
+h1, h2, h3, h4 {
+  color: var(--farm-green);
+}
+
+.hero-box {
+  background: linear-gradient(135deg, #f7f2ea 0%, #ffffff 100%);
+  border: 1px solid var(--farm-border);
+  border-radius: 22px;
+  padding: 1.5rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .75rem;
+}
+
+.badge {
+  background: var(--farm-green);
+  color: white;
+  border-radius: 999px;
+  padding: .35rem .8rem;
+  font-weight: 700;
+  font-size: .9rem;
+}
+
+.badge.tan {
+  background: var(--farm-tan);
+}
+
+.caption-note {
+  font-size: .92rem;
+  color: #6f6258;
+  font-style: italic;
+}
+
+.screenshot-note {
+  background: #fff8ec;
+  border-left: 5px solid var(--farm-tan);
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+img {
+  border-radius: 14px;
+  border: 1px solid var(--farm-border);
+}
+</style>
+```
+
+# Store Name and Concept
+
+## Store Name
+
+**CPP Digital Farm Store**
+
+## Store Concept
+
+The **CPP Digital Farm Store** is a Shopify prototype inspired by the Cal Poly Pomona Farm Store. The store concept focuses on fresh produce, local pantry goods, campus-made products, seasonal gift baskets, and custom gift boxes. The main idea is to help customers discover Farm Store products online, understand what is available, and complete a smoother pickup or gift-order process.
+
+> A successful retail store should make the customer journey easier before the customer ever arrives in person.
+
+This concept supports a **buy online, pick up in store** retail model while also testing how gift baskets and custom boxes could be organized through Shopify product pages, collections, forms, and cart functionality.
+
+::: {.callout-note title="Retail logic behind the concept"}
+The store is designed around convenience, visibility, and gifting. Instead of requiring customers to call or visit the store first, the website would give shoppers a clearer view of product categories, gift options, preparation time, pickup expectations, and seasonal availability.
+:::
+
+# Target Customer
+
+The primary target customer is a **CPP student or campus-connected shopper** who wants a quick and convenient way to discover seasonal items, grab-and-go products, and campus favorites. Secondary customers include alumni, parents, campus visitors, and nearby Pomona community members who are interested in gifts, local products, or fresh seasonal produce.
+
+::: panel-tabset
+## 1. Primary Segment: CPP Students
+
+CPP students are typically younger, mobile-first shoppers who value convenience, affordability, and quick pickup. They may discover the Farm Store through Instagram, campus word of mouth, Google Search, or walking around campus. Their shopping behavior is often time-sensitive because they may visit between classes or during short breaks.
+
+**Key characteristics:**
+
+-   Age range: primarily college-age students
+-   Lifestyle: busy, mobile-first, budget-conscious, campus-connected
+-   Shopping behavior: quick discovery, quick checkout, clear pickup expectations
+-   Core need: a fast way to see what is available and worth visiting the store for
+
+## 2. Secondary Segment: Proud CPP Gifters
+
+Proud CPP Gifters include alumni, parents, family members, staff, and campus visitors who want to purchase thoughtful gifts tied to Cal Poly Pomona. They are more likely to value presentation, occasion-based bundles, gift messages, and clear pickup or shipping instructions.
+
+**Key characteristics:**
+
+-   Age range: broad adult audience
+-   Lifestyle: campus-affiliated, family-oriented, occasion-driven
+-   Shopping behavior: searches for gifts during holidays, graduation, visits, and thank-you occasions
+-   Core need: polished gift options with clear customization and fulfillment steps
+
+## 3. Secondary Segment: Local Food Supporters
+
+Local Food Supporters include Pomona-area residents and community shoppers who value local produce, seasonal freshness, and supporting agriculture. They may find the Farm Store through Google Maps, local word of mouth, Facebook, or community events.
+
+**Key characteristics:**
+
+-   Location: Pomona and surrounding communities
+-   Lifestyle: local-first, food-conscious, farmers-market mindset
+-   Shopping behavior: checks hours, product availability, location, and seasonal produce updates
+-   Core need: current inventory visibility and reasons to make the trip
+:::
+
+# Product Category Plan
+
+The store will include several product categories that reflect the Farm Store’s mix of fresh, local, campus-connected, and giftable products. @tbl-product-plan summarizes the initial product category plan.
+
+| Product Category | Example Products | Retail Purpose |
+|------------------------|--------------------------------|-------------------------|
+| Fresh Produce | Seasonal produce boxes, citrus boxes, avocado/satsuma boxes | Drives freshness, local value, and routine visits |
+| Gift Baskets and Gift Boxes | Holiday baskets, breakfast boxes, custom gift boxes | Supports alumni, parent, and occasion-based gifting |
+| Local Pantry Goods | Honey, jams, salsa, sauces, preserves | Highlights local products and easy add-on purchases |
+| Campus Favorites | CPP ice cream, grab-and-go drinks, snacks | Appeals to students and campus visitors |
+| Seasonal Bundles | Holiday packs, graduation gifts, themed seasonal boxes | Creates campaign opportunities and limited-time promotions |
+
+: Initial product category plan for the Shopify practice store
+
+::: {.callout-tip title="Why these categories fit the prototype"}
+These categories make the store useful for more than one shopper type. Students get convenience, gifters get bundles, and local food supporters get seasonal produce visibility.
+:::
+
+# Initial Shopify Setup Evidence
+
+The following screenshots document the initial Shopify setup. These screenshots should be replaced with final screenshots from the live Shopify development store before submission.
+
+## Shopify Admin Area
+
+The Shopify admin area confirms that the practice store has been created and that the store owner can access major setup areas such as products, collections, online store, and themes.
+
+![Shopify admin area screenshot.](images/Shopify%20Admin%20Area.png){#fig-admin}
+
+## Selected Theme
+
+The selected theme for this prototype is connected to the custom Farm Store theme work. The selected theme provides the visual and structural foundation for the homepage, product pages, gift sections, and pickup flow.
+
+![Selected Shopify theme screenshot.](images/Shopify%20Custom%20Theme.png){#fig-theme}
+
+## Homepage Draft or Theme Customization Page
+
+The homepage draft begins to show the direction of the storefront. The initial homepage includes sections for the announcement bar, hero area, product categories, featured products, visit and pickup information, loyalty messaging, Farm Store story, newsletter signup, and footer.
+
+![Homepage draft or theme customization screenshot.](images/Farm%20Store%20Homepage.png){#fig-homepage}
+
+As shown in @fig-admin, @fig-theme, and @fig-homepage, the setup process is focused on creating a realistic storefront structure that can support product discovery and future ecommerce functionality.
+
+# Connection to CPP Farm Store Consulting Project
+
+This Shopify store concept connects directly to the CPP Farm Store consulting project because it helps translate the customer journey into a working digital retail prototype. The Farm Store has an opportunity to make product discovery, gift ordering, pickup expectations, and seasonal communication clearer for students, alumni, parents, visitors, and local shoppers. Building the practice store in Shopify helps test how a digital storefront could support inventory visibility, online product browsing, custom gift box ordering, pickup instructions, email capture, and future loyalty communication. These setup decisions also support the omnichannel strategy because they connect online discovery with the in-store Farm Store experience.
+
+::: {.callout-important title="Consulting takeaway"}
+The prototype is not only a website exercise. It is a way to test whether Shopify can reduce customer friction across awareness, consideration, purchase, pickup, post-purchase, and loyalty.
+:::
+
+# Appendix
+
+## Published Website and Repository Links
+
+-   **Published GitHub Pages report:** <https://mjshawell.github.io/IBM-6540-IBM-6300/>
+
+-   **GitHub repository:** [IBM-6540-IBM-6300 Repository](https://github.com/mjshawell/IBM-6540-IBM-6300)
