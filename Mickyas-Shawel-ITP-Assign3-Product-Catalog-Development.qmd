@@ -1,0 +1,318 @@
+---
+title: "ITP-W05 Shopify Store - Assignment 3 - Product Catalog Development"
+author: "Mickyas Shawel"
+date: today
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 4
+    toc-expand: 2
+    number-sections: true
+    code-link: true
+    code-tools: true
+    code-overflow: wrap
+    embed-resources: true
+
+editor: visual
+
+execute:
+  freeze: false
+  echo: false
+  warning: false
+  message: false
+---
+
+# Assignment Overview
+
+This report documents the product catalog development work completed for the Shopify practice store prototype. The store concept is based on how the **CPP Farm Store** could present fresh produce, campus favorites, specialty foods, gifts, and student-friendly items in a clear ecommerce environment.
+
+> **Key idea:** A product catalog is more than a product list. It helps customers understand what the store offers, compare options, evaluate value, and make purchase decisions.
+
+::: callout-note
+## Prototype Note
+
+The products in this catalog are sample products inspired by CPP Farm Store and similar local grocery/farm retail businesses. Product images should be original, royalty-free, AI-generated, or clearly labeled placeholders for educational use.
+:::
+
+# Product Catalog Summary
+
+For this assignment, I added a focused product assortment of **10 products** to the Shopify store. The assortment was designed to show how a Farm Store ecommerce catalog could support everyday shopping, seasonal browsing, gift purchasing, and campus-connected product discovery.
+
+Table @tbl-product-list summarizes the catalog.
+
+```{r}
+#| label: tbl-product-list
+#| tbl-cap: "Product list added to the Shopify practice store"
+#| echo: false
+
+products <- data.frame(
+  Product = c(
+    "CPP Farms Ice Cream",
+    "Farm Store Gift Basket",
+    "Custom Gift Box",
+    "Breakfast Theme Gift Box",
+    "Avocado / Satsuma Fruit Box",
+    "Seasonal Produce Box",
+    "Raw Local Honey",
+    "Farm Store Salsa",
+    "Local Cold Brew",
+    "Student Snack Pack"
+  ),
+  Category = c(
+    "CPP Favorites / Student Snacks & Drinks",
+    "Gifts",
+    "Gifts",
+    "Gifts",
+    "Fresh Produce / Gifts",
+    "Fresh Produce / Seasonal Bundles",
+    "Specialty Foods",
+    "Specialty Foods",
+    "Student Snacks & Drinks",
+    "Student Snacks & Drinks"
+  ),
+  Price = c(
+    "Half Pint: $2.99; Pint: $5.99",
+    "$65.00",
+    "$40.00 and up",
+    "$50.00",
+    "$40.00",
+    "$25.00",
+    "$8.99",
+    "$6.99",
+    "$4.99",
+    "$7.99"
+  ),
+  Inventory = c(
+    "Tracked by variant",
+    "Limited stock",
+    "Made to order",
+    "Limited stock",
+    "Seasonal availability",
+    "Seasonal availability",
+    "In stock",
+    "In stock",
+    "In stock",
+    "In stock"
+  ),
+  Tags = c(
+    "cpp-favorite, student-friendly, pickup-only",
+    "gift-basket, pickup-only",
+    "gift-box, pickup-available",
+    "gift-box, pickup-available",
+    "seasonal, pickup-available, gift-box",
+    "seasonal, pickup-available",
+    "specialty-food, pickup-available",
+    "specialty-food, pickup-available",
+    "student-friendly, pickup-available",
+    "student-friendly, pickup-available"
+  )
+)
+
+knitr::kable(products)
+```
+
+# Product Information Evidence
+
+This section provides evidence that product information was added to the Shopify store. Screenshots should show the product title, product description, price, image, inventory or stock information, and product category/type/tag/vendor information where appropriate.
+
+::: callout-tip
+## Screenshot Instructions
+
+Replace the screenshot placeholders below with your own screenshots from Shopify Admin or storefront product pages. Save screenshots in a folder called `images` inside the assignment project folder, then update the file names in the image links.
+:::
+
+## Evidence Checklist
+
+Each product page or admin screenshot should show:
+
+-   Product title
+-   Product description
+-   Product price
+-   Product image
+-   Inventory or stock information
+-   Product category, product type, tags, vendor, or collection assignment
+
+# Product Evidence by Category {.tabset}
+
+## CPP Favorites
+
+### CPP Farms Ice Cream
+
+**Product role:** Campus favorite and student-friendly frozen product.
+
+**Product description:** CPP Farms Ice Cream is a campus-favorite frozen treat inspired by the CPP Farm Store experience. It highlights the store's connection to Cal Poly Pomona, local agriculture, and student community favorites. The product includes two variants: **Half Pint** and **Pint**. Because it is a frozen product, it is listed as **pickup only**.
+
+**Recommended Shopify fields:**
+
+-   Product type: Frozen Dessert
+-   Vendor: CPP Farm Store
+-   Collections: Featured Products, CPP Favorites, Student Snacks & Drinks
+-   Tags: `cpp-favorite`, `student-friendly`, `pickup-only`
+-   Variants: Half Pint and Pint
+
+![CPP Farms Ice Cream product page or admin page](images/photo%201.png){#fig-ice-cream}
+
+## Gifts
+
+### Farm Store Gift Basket
+
+**Product role:** Main gift-oriented product for holidays, alumni, families, and campus visitors.
+
+**Product description:** A Farm Store gift basket featuring a curated mix of local goods, snacks, sauces, jams, drinks, and seasonal favorites. The basket supports high-intent gift buyers and reinforces the Farm Store's local and community-centered brand.
+
+**Recommended Shopify fields:**
+
+-   Product type: Gift Basket
+-   Vendor: CPP Farm Store
+-   Collection: Gifts
+-   Tags: `gift-basket`, `pickup-only`
+-   Fulfillment note: Requires 1--2 business days for preparation
+
+![Farm Store Gift Basket product page](images/photo%202.png){#fig-gift-basket}
+
+### Custom Gift Box
+
+**Product role:** Flexible gift option for customers who want to request specific item types.
+
+**Product description:** A customizable Farm Store gift box that allows customers to request preferred items such as honey, jam, fruit preserves, candy, CPP branded items, and seasonal goods. Final items may vary based on inventory availability.
+
+**Recommended Shopify fields:**
+
+-   Product type: Gift Box
+-   Vendor: CPP Farm Store
+-   Collection: Gifts
+-   Tags: `gift-box`, `pickup-available`
+
+![Custom Gift Box product page](images/photo%203.png){#fig-custom-gift-box}
+
+### Breakfast Theme Gift Box
+
+**Product role:** Occasion-based gift product built around a morning/breakfast theme.
+
+**Product description:** A curated gift box designed around breakfast and morning favorites. This product could include coffee, honey, jam, snacks, and other Farm Store items suitable for a thoughtful local gift.
+
+**Recommended Shopify fields:**
+
+-   Product type: Gift Box
+-   Vendor: CPP Farm Store
+-   Collection: Gifts
+-   Tags: `gift-box`, `pickup-available`
+
+![Breakfast Theme Gift Box product page](images/photo%204.png){#fig-breakfast-box}
+
+## Fresh Produce and Seasonal Bundles
+
+### Avocado / Satsuma Fruit Box
+
+**Product role:** Seasonal produce gift item that connects fresh produce with gift purchasing.
+
+**Product description:** A seasonal fruit box featuring fresh avocados and satsumas. This product helps customers discover seasonal Farm Store items and works well for pickup-based gifting.
+
+**Recommended Shopify fields:**
+
+-   Product type: Fruit Box
+-   Vendor: CPP Farm Store
+-   Collections: Fresh Produce, Gifts
+-   Tags: `seasonal`, `pickup-available`, `gift-box`
+
+![Avocado / Satsuma Fruit Box product page](images/photo%205.png){#fig-fruit-box}
+
+### Seasonal Produce Box
+
+**Product role:** Seasonal produce bundle that highlights fresh inventory and repeat shopping.
+
+**Product description:** A seasonal produce box featuring a rotating selection of fruits and vegetables based on inventory. The product helps customers understand what is currently available and encourages online-to-offline pickup behavior.
+
+**Recommended Shopify fields:**
+
+-   Product type: Produce Box
+-   Vendor: CPP Farm Store
+-   Collections: Fresh Produce, Seasonal Bundles
+-   Tags: `seasonal`, `pickup-available`
+
+![Seasonal Produce Box product page](images/photo%206.png){#fig-produce-box}
+
+## Specialty Foods
+
+### Raw Local Honey
+
+**Product role:** Local specialty item that supports pantry shopping and local sourcing.
+
+**Product description:** Raw Local Honey is a specialty pantry item that fits the Farm Store's local goods positioning. It is easy to understand, giftable, and useful for customers looking for local food products.
+
+**Recommended Shopify fields:**
+
+-   Product type: Specialty Food
+-   Vendor: CPP Farm Store
+-   Collection: Specialty Foods
+-   Tags: `specialty-food`, `pickup-available`
+
+![Raw Local Honey product page](images/photo%207.png){#fig-honey}
+
+### Farm Store Salsa
+
+**Product role:** Pantry-style specialty item that connects local flavor with Farm Store branding.
+
+**Product description:** Farm Store Salsa is a specialty food item that can be presented as a pantry staple, snack pairing, or gift basket add-on. It supports the store's ability to merchandise both everyday items and curated gift products.
+
+**Recommended Shopify fields:**
+
+-   Product type: Specialty Food
+-   Vendor: CPP Farm Store
+-   Collection: Specialty Foods
+-   Tags: `specialty-food`, `pickup-available`
+
+![Farm Store Salsa product page](images/photo%208.png){#fig-salsa}
+
+## Student Snacks and Drinks
+
+### Local Cold Brew
+
+**Product role:** Student-friendly beverage that supports quick campus visits.
+
+**Product description:** Local Cold Brew is a convenient beverage option for students, staff, and campus visitors. It helps make the Farm Store relevant for everyday visits, not only special shopping trips.
+
+**Recommended Shopify fields:**
+
+-   Product type: Beverage
+-   Vendor: CPP Farm Store
+-   Collection: Student Snacks & Drinks
+-   Tags: `student-friendly`, `pickup-available`
+
+![Local Cold Brew product page](images/photo%209.png){#fig-cold-brew}
+
+# Product Description Quality
+
+The product descriptions were written to be customer-friendly rather than vague. Each description explains what the product is, why it fits the Farm Store concept, and how the customer might use it. For example, gift products include preparation expectations, frozen products are marked as pickup-only, and seasonal products explain that availability may vary. This helps customers make informed decisions before adding items to their cart.
+
+::: callout-important
+## Customer Clarity
+
+For grocery and farm store ecommerce, customers need more than a product title. They need clear information about pickup, availability, preparation time, product substitutions, and whether the item is seasonal or limited.
+:::
+
+# Assortment Strategy Reflection
+
+The product assortment was designed around a focused Farm Store ecommerce experience rather than a full inventory catalog. The catalog includes fresh produce, CPP favorites, specialty foods, gift products, and student-friendly snacks and drinks. These products belong together because they represent different customer needs: everyday campus convenience, seasonal produce discovery, local specialty shopping, and occasion-based gifting. This assortment supports the store concept by showing how Shopify could organize products into clear collections that help customers browse, compare, and purchase without feeling overwhelmed. Of course with better understanding of total SKUs and product porfolio we wil consider enhancing product collections to better reflect store inventory.
+
+# CPP Farm Store Application Reflection
+
+CPP Farm Store should present products online in a way that makes product discovery and pickup expectations clear. Customers should be able to quickly understand what is available, what is seasonal, what can be picked up, and what requires preparation time. Gift baskets and custom boxes should include clear notes about inventory substitutions, pickup timing, and item requests. Fresh produce should emphasize seasonality and availability. Student-friendly items should be easy to find for quick purchases. Overall, CPP Farm Store should use product pages, collection pages, badges, and descriptions to reduce confusion and connect the online shopping experience to the in-store Farm Store journey.[^1]
+
+[^1]: This is especially important for perishable, frozen, or gift products because customers may need extra information before committing to an order.
+
+# Appendix
+
+## Published Report Link
+
+Replace the placeholder below with the GitHub Pages link after publishing the HTML report.
+
+-   GitHub Page: <https://mjshawell.github.io/IBM-6540-IBM-6300/>
+
+## GitHub Repository Link
+
+Replace the placeholder below with the assignment repository or project folder link.
+
+-   GitHub Repo: <https://github.com/mjshawell/IBM-6540-IBM-6300>
