@@ -1,0 +1,593 @@
+---
+title: "M05: Reflection on Odds, Log(Odds), Odds Ratio, and Log(OR)"
+author: "Mickyas Shawel"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-expand: 1
+    toc-location: right-body
+    toc-title: "Contents"
+    number-sections: true
+    code-fold: show
+    code-tools: true
+    code-overflow: wrap
+    theme: cosmo
+    highlight-style: github
+    df-print: paged
+    embed-resources: true
+execute:
+  warning: false
+  message: false
+  freeze: true
+---
+
+# Assignment Overview
+
+> **Prompt:** Watch the class recording available in Step 1. Redo the assignment for the questions reviewed in class. Take note of the answers, rationale, and code that you should know. Note that the concepts explained can be asked on the exam.
+
+This report is my reflection on the class recording from **Step 1** for the module on logistic fundamentals. The lecture reviewed the foundations of logarithms, probability, odds, log odds, and the role of these ideas in logistic regression. My goal in this report is to organize the reviewed questions into a professional Quarto document and create a useful study guide for future exams.
+
+::: {.callout-note title="Learning Goal"}
+The main idea I need to internalize is that logistic regression does not model a raw probability directly. It models the **log odds** of an event, which creates a more stable and symmetric scale for prediction.
+:::
+
+# Quarto Project Setup
+
+> **Prompt:** Start a new project and Quarto file (.qmd) as you learned previously. Create a folder for this workshop on your hard drive. You may call it `M05` under the course folder. Start a new project in your preferred IDE and select the previously created folder as the project folder. Start a QMD file and save the file appropriately in the M05 folder.
+
+For this assignment, I organized the work as a standalone Quarto project folder named `M05`. This helps keep the `.qmd`, `.html`, project file, and any images together. The `.Rproj` file should be opened first before editing the Quarto file because it automatically sets the project folder as the working environment.
+
+```{r}
+#| label: project-files
+#| echo: false
+project_files <- data.frame(
+  File = c(
+    "M05.Rproj",
+    "Mickyas-Shawel-M05-Reflection-on-Odds-LogOdds.qmd",
+    "Mickyas-Shawel-M05-Reflection-on-Odds-LogOdds.html",
+    "images/"
+  ),
+  Purpose = c(
+    "Opens the R/Quarto project environment",
+    "Main Quarto source file for the assignment",
+    "Rendered HTML report for submission and GitHub Pages",
+    "Optional folder for screenshots or figures"
+  )
+)
+project_files
+```
+
+# Report Formatting Features
+
+> **Prompt:** Prepare your report using Quarto. Implement as many features and effects of the HTML format as possible, including text formatting, headings, lists, blockquotes, panel tabsets or tables, cross-referencing, footnotes, callout blocks, table of contents, section numbering, self-contained HTML, theme options, hiding code, code overflow, and code tools.
+
+This report uses Quarto features to make the reflection easier to read and study from. The YAML header includes a table of contents, numbered sections, a Cosmo theme, code tools, foldable code, and `embed-resources: true` so the HTML file can be self-contained.
+
+The report also includes:
+
+-   hierarchical headings for each reviewed concept,
+-   LaTeX equations for probability, odds, and log odds,
+-   R code chunks for calculations,
+-   callout blocks for exam notes,
+-   tables for formula summaries,
+-   panel tabsets for comparing concepts,
+-   cross-references to tables and figures,
+-   footnotes for study reminders.[^1]
+
+[^1]: A useful study habit is to memorize the formula for odds and log odds, then practice converting between probability, odds, and log odds using small examples.
+
+# Core Formulas to Know
+
+> **Prompt:** Take note of the answers, rationale, and code that you should know.
+
+Before redoing the reviewed questions, I summarized the formulas that appear throughout the lecture. These formulas are central to logistic regression.
+
+```{r}
+#| label: tbl-formulas
+#| tbl-cap: "Core formulas for probability, odds, log odds, and odds ratio."
+formulas <- data.frame(
+  Concept = c("Probability", "Odds", "Log Odds / Logit", "Odds Ratio", "Probability from Odds"),
+  Formula = c(
+    "p = yes / total",
+    "odds = p / (1 - p)",
+    "logit(p) = log(p / (1 - p))",
+    "OR = odds_1 / odds_0",
+    "p = odds / (1 + odds)"
+  ),
+  Interpretation = c(
+    "Share of observations where the event occurs",
+    "Event likelihood compared with non-event likelihood",
+    "Log-transformed odds used in logistic regression",
+    "How many times larger one odds is compared with another",
+    "Converts odds back into a probability scale"
+  )
+)
+formulas
+```
+
+The most important equations are:
+
+$$
+\text{Odds} = \frac{p}{1-p}
+$$
+
+$$
+\text{Log Odds} = \log\left(\frac{p}{1-p}\right)
+$$
+
+$$
+p = \frac{\text{Odds}}{1 + \text{Odds}}
+$$
+
+::: {.callout-tip title="Exam Note"}
+If probability is below 50%, the odds are below 1. If probability is exactly 50%, the odds are 1. If probability is above 50%, the odds are greater than 1.
+:::
+
+# Class Recording Review Questions
+
+The following sections redo the questions that were reviewed during the Step 1 class recording.
+
+## Question 1: What Does a Logarithm Do?
+
+> **Prompt:** Complete the statement: If $2^5 = 32$, then $\log_2(32)$ equals what? Verify in R. Why is this useful when income values range from $7,000$ to $455,000$?
+
+A logarithm isolates the exponent. Since $2^5 = 32$, the value of $\log_2(32)$ is 5. This means the log asks: “What power do I need to raise the base to in order to get this number?”
+
+```{r}
+#| label: log-base-two
+log(32, base = 2)
+```
+
+For income values, logs are useful because raw income can be heavily right-skewed. A small number of customers may have very high income values, which stretches the scale and makes linear modeling harder. Logging the income compresses the range.
+
+```{r}
+#| label: income-log-comparison
+income_low <- 7000
+income_high <- 455000
+
+raw_ratio <- income_high / income_low
+log_low <- log(income_low, base = 10)
+log_high <- log(income_high, base = 10)
+
+c(
+  raw_ratio = raw_ratio,
+  log_low = log_low,
+  log_high = log_high,
+  log_range = log_high - log_low
+)
+```
+
+On the raw scale, $455,000$ is 65 times larger than $7,000$. On the base-10 log scale, the values become much closer: about 3.85 and 5.66. This makes the variable easier to use in models because the scale is less extreme.
+
+::: {.callout-important title="Key Rationale"}
+Log transformation helps when data are skewed because it compresses large values more than small values. This can make relationships more linear and reduce the influence of extreme values.
+:::
+
+## Question 2: Multiplication Becomes Addition
+
+> **Prompt:** Verify using $a = 4$ and $b = 8$ with base 2 that $\log_2(a \times b) = \log_2(a) + \log_2(b)$. Explain why this is useful in logistic regression.
+
+A key log rule is that multiplication inside the log becomes addition outside the log:
+
+$$
+\log_b(a \times c) = \log_b(a) + \log_b(c)
+$$
+
+```{r}
+#| label: log-multiplication-rule
+a <- 4
+b <- 8
+
+left_side <- log(a * b, base = 2)
+right_side <- log(a, base = 2) + log(b, base = 2)
+
+c(left_side = left_side, right_side = right_side)
+```
+
+Both sides equal 5. This property matters in logistic regression because probabilities can become very small when multiplied together. Working with log values is computationally safer because it turns products into sums and reduces the risk of numerical underflow.
+
+::: {.callout-note title="Connection to Logistic Regression"}
+In logistic regression, the model is connected to likelihood. Logs make the mathematics easier and more stable because adding log values is safer than multiplying many tiny probability values.
+:::
+
+## Question 3: Geometric Mean vs. Arithmetic Mean
+
+> **Prompt:** For customer order values 10, 20, 80, 40, and 1000, compute the arithmetic mean and geometric mean. Which better represents the typical customer and why?
+
+The arithmetic mean is sensitive to outliers. In this example, the \$1,000 order is much larger than the other values and pulls the average upward.
+
+```{r}
+#| label: geometric-vs-arithmetic
+orders <- c(10, 20, 80, 40, 1000)
+
+arithmetic_mean <- mean(orders)
+geometric_mean <- exp(mean(log(orders)))
+
+c(
+  arithmetic_mean = arithmetic_mean,
+  geometric_mean = geometric_mean
+)
+```
+
+The arithmetic mean is \$230, while the geometric mean is about \$57.43. The geometric mean better represents the typical customer because most customers are ordering closer to the lower values, not \$230. The outlier distorts the arithmetic mean.
+
+```{r}
+#| label: fig-order-values
+#| fig-cap: "Customer order values showing the effect of one large outlier."
+barplot(
+  orders,
+  names.arg = paste0("Order ", 1:5),
+  main = "Customer Order Values",
+  ylab = "Order Value ($)"
+)
+```
+
+As shown in @fig-order-values, one order is much larger than the others. This is why the geometric mean can be more representative when data multiply or when the scale is strongly skewed.
+
+## Question 4: Log of Zero and the Offset
+
+> **Prompt:** The video explains that $\log(0)$ is undefined. What is $\log(0 + 1)$ and why is adding 1 a safe lower bound?
+
+The log of zero is undefined because there is no exponent that can turn a positive base into zero. In R, this appears as negative infinity.
+
+```{r}
+#| label: log-zero
+log(0)
+log(0 + 1)
+```
+
+Adding an offset of 1 makes the smallest possible transformed value equal to $\log(1)$, which is 0. This avoids undefined values during preprocessing.
+
+::: {.callout-warning title="Recipe Step Reminder"}
+When using `step_log()` in a recipe, an offset such as `offset = 1` is commonly used so that zero values can be transformed safely.
+:::
+
+## Question 5: Log Base Conversion
+
+> **Prompt:** Calculate an income value using log base 2, log base 10, and natural log. Then divide the natural log by the base-10 log. After `step_normalize()` is applied in a recipe, does it matter which base was used for `step_log()`?
+
+Different log bases produce different numeric values, but the values are proportional by a constant.
+
+```{r}
+#| label: log-base-conversion
+income_value <- 49021
+
+log_base_2 <- log(income_value, base = 2)
+log_base_10 <- log(income_value, base = 10)
+natural_log <- log(income_value)
+ratio_ln_to_log10 <- natural_log / log_base_10
+
+c(
+  log_base_2 = log_base_2,
+  log_base_10 = log_base_10,
+  natural_log = natural_log,
+  ratio_ln_to_log10 = ratio_ln_to_log10,
+  ln_10 = log(10)
+)
+```
+
+The ratio between the natural log and base-10 log is $\ln(10)$, which is about 2.3026.
+
+After `step_normalize()` is applied, the log base usually does not matter for the final standardized variable because normalization subtracts the mean and divides by the standard deviation:
+
+$$
+z = \frac{x - \bar{x}}{s}
+$$
+
+Multiplying all values by the same constant changes the mean and standard deviation proportionally, so the standardized scores remain equivalent.
+
+::: {.callout-tip title="Exam Note"}
+Different log bases change the scale, but after centering and scaling, the normalized values are effectively the same because the difference is only a constant multiplier.
+:::
+
+## Question 6: Probability vs. Odds
+
+> **Prompt:** In the mail data, 142 customers responded “yes” out of 3,000. Compute the probability of responding, compute the odds of responding, and explain what odds of about 0.05 means for a marketer.
+
+Probability is the number of yes responses divided by the total number of mailed customers. Odds compare yes responses to no responses.
+
+```{r}
+#| label: probability-vs-odds
+yes <- 142
+no <- 3000 - yes
+
+probability_response <- yes / (yes + no)
+odds_response <- yes / no
+odds_from_probability <- probability_response / (1 - probability_response)
+
+c(
+  yes = yes,
+  no = no,
+  probability_response = probability_response,
+  odds_response = odds_response,
+  odds_from_probability = odds_from_probability
+)
+```
+
+The response probability is about 4.73%. The odds are about 0.0497, which rounds to 0.05. For a marketer, odds of 0.05 means there is about **1 response for every 20 non-responses**.
+
+```{r}
+#| label: odds-interpretation
+non_responses_per_one_response <- 1 / 0.05
+non_responses_per_one_response
+```
+
+This interpretation is useful because marketers often need to understand response rates in practical terms. Instead of only saying “4.73% responded,” we can say that roughly one person responded for every twenty people who did not.
+
+## Question 7: Converting Between Probability and Odds
+
+> **Prompt:** Convert probabilities of 20%, 50%, and 80% into odds. What pattern do you notice as probability approaches 1?
+
+The formula for converting probability into odds is:
+
+$$
+\text{Odds} = \frac{p}{1-p}
+$$
+
+```{r}
+#| label: probability-to-odds-function
+probability_to_odds <- function(p) {
+  p / (1 - p)
+}
+
+probabilities <- c(0.20, 0.50, 0.80, 0.99)
+odds_values <- probability_to_odds(probabilities)
+
+data.frame(
+  Probability = probabilities,
+  Odds = odds_values
+)
+```
+
+A 20% probability gives odds of 0.25, which means 1 success for every 4 failures. A 50% probability gives odds of 1, which means even odds. An 80% probability gives odds of 4, which means 4 successes for every 1 failure.
+
+As probability approaches 1, odds approach infinity. This is because the denominator $1-p$ gets closer to zero.
+
+::: panel-tabset
+### 20% Probability
+
+$$
+\frac{0.20}{1-0.20} = 0.25
+$$
+
+Interpretation: 1 response for every 4 non-responses.
+
+### 50% Probability
+
+$$
+\frac{0.50}{1-0.50} = 1
+$$
+
+Interpretation: 1 response for every 1 non-response.
+
+### 80% Probability
+
+$$
+\frac{0.80}{1-0.80} = 4
+$$
+
+Interpretation: 4 responses for every 1 non-response.
+:::
+
+## Question 8: Why Log Odds Are Used
+
+> **Prompt:** Compute log odds for probabilities 0.10, 0.50, and 0.90. Verify that log odds at probability 0.50 equals exactly zero. Why does this make sense intuitively? What does symmetry mean for modeling?
+
+Raw odds are asymmetric. Odds can range from 0 to 1 when the event is unlikely and from 1 to infinity when the event is likely. Taking the log of odds fixes this by creating a symmetric scale around zero.
+
+```{r}
+#| label: log-odds-table
+p_values <- c(0.10, 0.50, 0.90)
+odds <- p_values / (1 - p_values)
+log_odds <- log(odds)
+
+log_odds_table <- data.frame(
+  Probability = p_values,
+  Odds = odds,
+  Log_Odds = log_odds
+)
+
+log_odds_table
+```
+
+At $p = 0.50$, the odds equal 1, and $\log(1) = 0$. This makes sense because 50% probability is the balance point where an event and non-event are equally likely.
+
+The symmetry matters because values below 50% become negative log odds, values above 50% become positive log odds, and 50% becomes zero. This gives the model a centered numeric scale.
+
+```{r}
+#| label: fig-log-odds-curve
+#| fig-cap: "Log odds transform probabilities onto a symmetric scale around zero."
+p_seq <- seq(0.01, 0.99, by = 0.01)
+logit_seq <- log(p_seq / (1 - p_seq))
+
+plot(
+  p_seq,
+  logit_seq,
+  type = "l",
+  main = "Probability to Log Odds",
+  xlab = "Probability",
+  ylab = "Log Odds"
+)
+abline(h = 0, lty = 2)
+abline(v = 0.5, lty = 2)
+```
+
+@fig-log-odds-curve shows that the log odds scale is centered at zero when probability equals 0.50.
+
+## Question 9: Logit and Logistic Regression
+
+> **Prompt:** Using the mail data, compute the overall response rate. Convert it to log odds. Then write R code to convert a predicted probability of yes to log odds.
+
+The logit is the log of odds:
+
+$$
+\text{logit}(p) = \log\left(\frac{p}{1-p}\right)
+$$
+
+First, I calculate the overall response probability from the mail data example.
+
+```{r}
+#| label: mail-response-logit
+p_respond <- 142 / 3000
+odds_respond <- p_respond / (1 - p_respond)
+log_odds_respond <- log(odds_respond)
+
+c(
+  p_respond = p_respond,
+  odds_respond = odds_respond,
+  log_odds_respond = log_odds_respond
+)
+```
+
+The overall response probability is about 4.73%. The log odds are about -3.00. The value is negative because the event is unlikely and the probability is below 50%.
+
+The same formula can be used to convert a model's predicted probability into log odds.
+
+```{r}
+#| label: predicted-probability-to-log-odds
+predicted_probabilities <- data.frame(
+  customer_id = 1:5,
+  pred_yes = c(0.0443, 0.0950, 0.2000, 0.5000, 0.8000)
+)
+
+predicted_probabilities$log_odds <- log(
+  predicted_probabilities$pred_yes / (1 - predicted_probabilities$pred_yes)
+)
+
+predicted_probabilities
+```
+
+This code pattern is important because many model outputs provide predicted probabilities, but logistic regression coefficients are interpreted on the log odds scale.
+
+## Question 10: Prediction Output and Classification Thresholds
+
+> **Prompt:** In the lecture, the fitted logistic model produced `.pred_yes`, `.pred_no`, and `.pred_class`. Explain how the predicted class is decided.
+
+A logistic regression model can output a predicted probability for each class. For a binary outcome such as `yes` or `no`, the model may produce `.pred_yes` and `.pred_no`. The predicted class is usually based on a threshold, commonly 0.50.
+
+```{r}
+#| label: classification-threshold
+preds_example <- data.frame(
+  customer_id = 1:6,
+  pred_yes = c(0.0443, 0.1200, 0.3500, 0.5100, 0.7200, 0.9100)
+)
+
+preds_example$pred_no <- 1 - preds_example$pred_yes
+preds_example$pred_class <- ifelse(preds_example$pred_yes >= 0.50, "yes", "no")
+
+preds_example
+```
+
+If `.pred_yes` is greater than or equal to 0.50, the predicted class is `yes`. If `.pred_yes` is less than 0.50, the predicted class is `no`.
+
+::: {.callout-important title="Important Interpretation"}
+A predicted probability of 0.0443 means the model estimates about a 4.43% chance that the customer will respond. Since this is below 50%, the predicted class is `no` under the default threshold.
+:::
+
+# Logistic Regression Study Notes
+
+> **Prompt:** Take note of the answers, rationale, and code that you should know. Note that the concepts explained can be asked in the exam.
+
+This module connects basic logarithm rules to logistic regression. The key idea is that probability alone is bounded between 0 and 1, which is not ideal for a linear model. Odds improve the interpretation by comparing the event to the non-event, but odds are still asymmetric. Log odds solve this problem by creating a scale from negative infinity to positive infinity.
+
+```{r}
+#| label: tbl-study-summary
+#| tbl-cap: "Study summary of logistic fundamentals."
+study_summary <- data.frame(
+  Topic = c(
+    "Logarithm",
+    "Log transformation",
+    "Probability",
+    "Odds",
+    "Log odds",
+    "Classification threshold"
+  ),
+  What_to_Remember = c(
+    "A log isolates the exponent.",
+    "Logs compress large values and help with skewed variables.",
+    "Probability is event count divided by total count.",
+    "Odds compare event count with non-event count.",
+    "Log odds create a symmetric modeling scale centered at zero.",
+    "Predicted class often uses a 0.50 cutoff unless changed."
+  ),
+  R_Code_Pattern = c(
+    "log(x, base = 2)",
+    "log(x + 1)",
+    "yes / total",
+    "p / (1 - p)",
+    "log(p / (1 - p))",
+    "ifelse(pred_yes >= 0.50, 'yes', 'no')"
+  )
+)
+
+study_summary
+```
+
+## Concepts I Need to Remember
+
+1.  A logarithm answers the question: “What exponent gets me to this value?”
+2.  Log transformation is helpful for skewed data such as income or order values.
+3.  The log of zero is undefined, so an offset such as 1 can be added.
+4.  Probability and odds are related, but they are not the same thing.
+5.  Odds of 1 means an event and non-event are equally likely.
+6.  Log odds are negative below 50%, zero at 50%, and positive above 50%.
+7.  Logistic regression models log odds, not raw probability directly.
+8.  Predicted probabilities can be converted into predicted classes using a threshold.
+
+## R Code Patterns I Need to Know
+
+```{r}
+#| label: code-patterns
+# Log with a specific base
+log(32, base = 2)
+
+# Add an offset before logging
+log(0 + 1)
+
+# Probability
+p <- 142 / 3000
+
+# Odds
+odds <- p / (1 - p)
+
+# Log odds / logit
+log_odds <- log(odds)
+
+# Predicted class from probability
+ifelse(p >= 0.50, "yes", "no")
+```
+
+## Common Interpretation Mistakes
+
+::: {.callout-warning title="Mistakes to Avoid"}
+Do not say that odds and probability are the same. A probability of 20% gives odds of 0.25, not odds of 0.20.
+
+Do not interpret a negative log odds as a negative probability. A negative log odds simply means the probability is below 50%.
+
+Do not forget the offset when taking the log of a variable that may include zero values.
+:::
+
+# Reflection and Conclusion
+
+> **Prompt:** Reflect on what you learned in this module.
+
+This module helped me understand why logistic regression uses log odds instead of raw probabilities. At first, probability feels more intuitive because it is expressed as a percentage. However, probability is restricted between 0 and 1, which creates limitations for modeling. Odds compare the event to the non-event, and log odds transform that comparison into a symmetric scale that is better suited for regression modeling.
+
+The most important practical takeaway is that the same customer response can be described in different ways. For example, a response rate of about 4.73% can also be described as odds of about 0.05, or roughly one response for every twenty non-responses. In log odds form, that becomes about -3.00, which communicates that the event is unlikely on the logistic regression scale.
+
+This reflection also helped me connect code to interpretation. The formulas are not just mathematical rules; they explain how machine learning models classify customers, estimate response probability, and turn predictions into decisions.
+
+# GitHub
+
+Github Repository: <https://github.com/mjshawell/IBM-6540-IBM-6300>
+
+Github Page Link: <https://mjshawell.github.io/IBM-6540-IBM-6300/>
+
+# Session Information
+
+```{r}
+#| label: session-info
+sessionInfo()
+```
