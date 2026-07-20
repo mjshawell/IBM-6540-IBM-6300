@@ -1,0 +1,172 @@
+---
+title: "ITP-W06-Shopify Store - Assignment 4 - Collections and Navigation"
+author: "Mickyas Shawel"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-expand: 2
+    number-sections: true
+    code-link: true
+    code-tools: true
+    code-overflow: wrap
+    embed-resources: true
+    theme: cosmo
+editor: visual
+execute:
+  freeze: auto
+  echo: false
+  warning: false
+  message: false
+---
+
+```{=html}
+<style>
+:root {
+  --farm-green: #0b4a33;
+  --farm-green-2: #203c26;
+  --farm-tan: #bf9568;
+  --farm-brown: #4e3a32;
+  --farm-cream: #f7f2ea;
+  --farm-border: #ded2c4;
+}
+
+body {
+  color: var(--farm-brown);
+}
+
+h1, h2, h3, h4 {
+  color: var(--farm-green);
+}
+
+.hero-box {
+  background: linear-gradient(135deg, #f7f2ea 0%, #ffffff 100%);
+  border: 1px solid var(--farm-border);
+  border-radius: 22px;
+  padding: 1.5rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .75rem;
+}
+
+.badge {
+  background: var(--farm-green);
+  color: white;
+  border-radius: 999px;
+  padding: .35rem .8rem;
+  font-weight: 700;
+  font-size: .9rem;
+}
+
+.badge.tan {
+  background: var(--farm-tan);
+}
+
+.caption-note {
+  font-size: .92rem;
+  color: #6f6258;
+  font-style: italic;
+}
+
+.screenshot-note {
+  background: #fff8ec;
+  border-left: 5px solid var(--farm-tan);
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+img {
+  border-radius: 14px;
+  border: 1px solid var(--farm-border);
+}
+</style>
+```
+
+# Overview
+
+This report documents Assignment 4 — organizing the CPP Farm Store Shopify prototype (`cpp-farm-store-dev.myshopify.com`) into browsable collections with a clear main navigation menu. Ten collections already existed on the store from earlier work in this project, so this assignment focused on **verifying those collections meet the assignment's merchandising bar** and on **auditing and correcting the main navigation menu**, which turned out to have two mislabeled links pointing to the wrong collections entirely.
+
+::: {.callout-important title="What this assignment actually found"}
+Auditing the live navigation menu turned up a real bug: the **"Fresh Produce"** menu link was wired to the *Fruit Boxes* collection instead of the actual *Fresh Produce* collection, and a menu item labeled **"Student Favorites"** was wired to the generic *Featured Products* collection instead of *Student Snacks & Drinks*. Both were corrected directly through the Shopify Admin API this session, and a third link to the *Specialty Foods* collection was added since it did not appear in the main menu at all.[^1]
+:::
+
+[^1]: This is the same category of problem the GP3 product-feed audit found in the product catalog itself — a collection or product can be fully built and still fail the customer if the pointer to it is wrong.
+
+# Collections {#sec-collections}
+
+@tbl-collections lists the store's collections at the time of this assignment. At least three were required; the store has ten, organized around how a real customer would describe what they came in for rather than an internal product taxonomy.
+
+| Collection | Handle | Products | Purpose |
+|------------------|------------------|------------------|------------------|
+| Fresh Produce | `fresh-produce` | 4 | Seasonal fruits and vegetables — the store's core, most-visited category |
+| Specialty Foods | `specialty-foods` | 4 | Honey, salsa, orange juice, fresh baked bread — pantry-style local goods |
+| Student Snacks & Drinks | `student-snacks-drinks` | 5 | Cold brew, ice cream, grab-and-go items priced and framed for students |
+| Gift Baskets | `gift-baskets` | 7 | Ready-made curated baskets |
+| Gifts | `gifts` | 9 | Broader gift-box category, including customizable boxes |
+| Fruit Boxes | `fruit-boxes` | 5 | Produce-based gift boxes (citrus, avocado/satsuma) — distinct from everyday Fresh Produce |
+| CPP Favorites | `cpp-favorites` | 9 | Cross-category collection of the most campus-branded items |
+| Seasonal Bundles | `seasonal-bundles` | 2 | Holiday and limited-time items |
+| Featured Products | `products` | 11 | Homepage merchandising collection, not a customer-facing category label |
+| All Products | `all` | 15 | Full catalog fallback |
+
+: CPP Farm Store Shopify collections
+
+![Collections in the Shopify admin. *(Placeholder generated for this draft; replace with a live screenshot of the URL noted on the image before final submission.)*](images/Farmtore Nav Menu.png){#fig-admin-collections}
+
+![Specialty Foods collection page on the storefront.](images/Collection Page Farmstore.png){#fig-storefront-collection}
+
+# Navigation Menu {#sec-navigation}
+
+The main menu (@fig-nav-menu) was revised this session to fix the two mislabeled links described above and to add Specialty Foods. The corrected menu now reads: Home, Shop All Products, Fresh Produce, Specialty Foods, Student Snacks & Drinks, Gift Boxes, Gift Baskets, Our Story, Contact, Visit & Pickup FAQ, Farm Rewards.
+
+![Main navigation menu on the storefront, open in the mobile menu panel.](images/Admin Collections List.png){#fig-nav-menu}
+
+::: panel-tabset
+## Fresh Produce → Fresh Produce collection
+
+Before: linked to the *Fruit Boxes* collection. A customer looking for everyday produce would land on gift-style fruit boxes instead.
+
+After: links to `/collections/fresh-produce`, the actual everyday produce collection.
+
+## Student Snacks & Drinks → Student Snacks & Drinks collection
+
+Before: labeled "Student Favorites" and linked to the generic *Featured Products* collection (a homepage merchandising list, not a real category).
+
+After: relabeled and relinked to `/collections/student-snacks-drinks`.
+
+## Specialty Foods (new)
+
+Before: no menu entry existed for this collection at all, even though it already had a description and banner image from Assignment 5.
+
+After: added as its own top-level menu item linking to `/collections/specialty-foods`.
+:::
+
+> A navigation menu is a promise to the customer about what they'll find when they click. A mislabeled link breaks that promise even when the destination page itself is well built — which is exactly what the Fresh Produce and Student Favorites links were doing before this fix.
+
+# Merchandising Logic Explanation
+
+Products were organized into collections around **shopper intent rather than internal product type**. Fresh Produce and Specialty Foods are kept as two separate collections even though both are "food," because a customer coming in for weekly produce is in a different mindset than someone browsing pantry goods like honey or salsa — splitting them keeps each collection page focused instead of mixing rotating perishables with shelf-stable items in one long, harder-to-scan list. Gift Baskets, Gifts, and Fruit Boxes are kept as a distinct cluster from everyday Fresh Produce for the same reason: a citrus box bought as a gift and a bag of everyday oranges are the same underlying product category, but the shopper's goal is different, so they are merchandised differently. Student Snacks & Drinks exists as its own collection specifically because CPP Students were identified as the largest, most price- and convenience-sensitive segment in the Assignment 2 customer analysis, so that segment gets a dedicated, low-friction entry point instead of being buried in a general product list.
+
+# Customer Experience Explanation
+
+The navigation structure helps customers shop more easily by making the menu labels match their actual destinations, which — before this session's fix — was not reliably true. A returning customer who trusted the "Fresh Produce" link to show produce and instead landed on gift fruit boxes would reasonably conclude the site was disorganized or broken, even though every individual page was fine. Fixing the two mislabeled links and adding the missing Specialty Foods entry means every top-level menu item now takes a customer exactly where its label says it will, which reduces the number of clicks and dead ends between "I want X" and finding X. Splitting the menu into distinct, short category labels (rather than one long "Shop" link to everything) also lets each of the store's real customer segments — students, gifters, local shoppers — recognize their own entry point in the first few words of the menu rather than having to browse the entire catalog to find it.
+
+# CPP Farm Store Application Reflection
+
+The real CPP Farm Store could apply this same intent-based logic rather than organizing online categories the way a warehouse might organize physical inventory. A reasonable starting set of categories would be Fresh Produce, Dairy & Meat, Bakery & Deli, Specialty & Pantry Goods (honey, jams, sauces), Nursery & Plants, Gift Baskets & Gift Boxes, and Beer & Wine (kept separate and age-gated, consistent with the compliance notes already raised in the GP3 retail-media plan). Because the Farm Store's real customers span CPP students, alumni and gift buyers, and local Pomona shoppers — the same three segments identified in this group's earlier customer analysis — its navigation menu should surface at least one category each of those groups would recognize immediately, the same principle this assignment applied by giving Student Snacks & Drinks and Specialty Foods their own dedicated menu links rather than folding them into a single generic "Shop" category. Just as important as adding categories, though, is what this assignment's navigation audit found: a beautifully organized set of collections is worthless to a customer if even one menu link is wired to the wrong page, so any real navigation build should include the same kind of "click every link and confirm it goes where its label says" check performed here.
+
+# Appendix
+
+## Published Website and Repository Links
+
+- **Published GitHub Pages report:** <https://mjshawell.github.io/IBM-6540-IBM-6300/>
+
+- **GitHub repository:** [IBM-6540-IBM-6300 Repository](https://github.com/mjshawell/IBM-6540-IBM-6300)
+
+- **Live Shopify prototype (password protected):** <https://cpp-farm-store-dev.myshopify.com/>
