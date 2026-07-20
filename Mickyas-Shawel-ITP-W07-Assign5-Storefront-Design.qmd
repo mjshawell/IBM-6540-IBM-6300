@@ -1,0 +1,173 @@
+---
+title: "ITP-W07-Shopify Store - Assignment 5 - Storefront Design and Customer Experience"
+author: "Mickyas Shawel"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-expand: 2
+    number-sections: true
+    code-link: true
+    code-tools: true
+    code-overflow: wrap
+    embed-resources: true
+    theme: cosmo
+editor: visual
+execute:
+  freeze: auto
+  echo: false
+  warning: false
+  message: false
+---
+
+```{=html}
+<style>
+:root {
+  --farm-green: #0b4a33;
+  --farm-green-2: #203c26;
+  --farm-tan: #bf9568;
+  --farm-brown: #4e3a32;
+  --farm-cream: #f7f2ea;
+  --farm-border: #ded2c4;
+}
+
+body {
+  color: var(--farm-brown);
+}
+
+h1, h2, h3, h4 {
+  color: var(--farm-green);
+}
+
+.hero-box {
+  background: linear-gradient(135deg, #f7f2ea 0%, #ffffff 100%);
+  border: 1px solid var(--farm-border);
+  border-radius: 22px;
+  padding: 1.5rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .75rem;
+}
+
+.badge {
+  background: var(--farm-green);
+  color: white;
+  border-radius: 999px;
+  padding: .35rem .8rem;
+  font-weight: 700;
+  font-size: .9rem;
+}
+
+.badge.tan {
+  background: var(--farm-tan);
+}
+
+.caption-note {
+  font-size: .92rem;
+  color: #6f6258;
+  font-style: italic;
+}
+
+.screenshot-note {
+  background: #fff8ec;
+  border-left: 5px solid var(--farm-tan);
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+img {
+  border-radius: 14px;
+  border: 1px solid var(--farm-border);
+}
+</style>
+```
+
+# Overview
+
+This report documents storefront design and customer experience improvements made to the CPP Farm Store Shopify prototype (`cpp-farm-store-dev.myshopify.com`) for Assignment 5. Unlike earlier assignments, this pass focused less on adding new sections and more on **making the store customers already see actually work** — fixing the gaps between a polished-looking page and a page that converts a browsing customer into a completed order.
+
+::: {.callout-note title="What changed this session"}
+Working directly against the live Shopify Admin API, this session fixed three concrete, verifiable problems: (1) three in-demand products showing as sold out due to zero inventory, (2) inconsistent brand/vendor data across products (a gap first flagged in the GP3 product-feed audit), and (3) a collection page with no banner image. These are the kind of small data problems that quietly break an otherwise good-looking storefront.
+:::
+
+# Homepage Improvement Evidence
+
+The homepage (@fig-homepage) uses a hero section, an announcement bar, a six-category "Shop by Collections" grid, and a four-item "Featured Products" grid built in earlier sessions. It already follows solid storefront design fundamentals: a clear one-sentence value proposition ("Fresh from the farm, built for your table"), two calls to action (Shop Products / Explore Gift Options), and category cards that map directly to how the Farm Store's real catalog is organized (Fresh Produce, CPP Favorites, Specialty Foods, Gifts, Student Snacks & Drinks, Seasonal Bundles).
+
+The improvement made this session was underneath that layout: two of the four products featured directly on the homepage grid — **Farm Store Salsa** and, by extension, the **Specialty Foods** category it belongs to — were tied to a product with **zero inventory**, meaning a student who clicked through from the homepage would land on a page that couldn't be purchased. A homepage is only as good as the pages it sends people to, so this was treated as a homepage-level problem, not just a product-page problem, and fixed by restocking the affected items (see @sec-product-evidence and @sec-collection-evidence).
+
+![CPP Farm Store homepage — hero, collections grid, and featured products. *(Placeholder generated for this draft; replace with a live screenshot of the URL noted on the image before final submission — see @sec-cx-features for what to capture.)*](images/Homepage.png){#fig-homepage}
+
+# Product Page Improvement Evidence {#sec-product-evidence}
+
+Two product pages were improved directly through the Shopify Admin API this session: **CPP Farms Ice Cream** and the **Deluxe Theme Gift Box**.
+
+## CPP Farms Ice Cream
+
+Before this session, this product's Vendor field read `cpp-farm-store-dev` — the store's internal handle, not a real brand name — an inconsistency first flagged during the GP3 product-feed audit. The description also didn't state tub sizes. Both were fixed:
+
+-   **Brand corrected:** `cpp-farm-store-dev` → **CPP Farm Store**, matching every other product in the catalog.
+-   **Description rewritten** to state the Pint (16 oz) and Half Pint (8 oz) sizes explicitly, and to separate the pickup-only rationale into its own sentence rather than burying it in one long paragraph.
+
+![CPP Farms Ice Cream product page after the brand and description fix.](images/Product-CPP-Farms-Ice-Cream.png){#fig-product1}
+
+## Deluxe Theme Gift Box
+
+This $75 gift box previously showed **0 units in stock** — effectively unpurchasable — and its shipping policy was a single ambiguous sentence ("if shipping is selected, the Farm Store will contact the customer once shipping has been calculated"). Both were fixed:
+
+-   **Restocked to 20 units** so the Add to Cart flow is actually usable.
+-   **Description restructured** into clearly labeled **Pickup** and **Shipping** lines, so a shopper doesn't have to parse a paragraph to find out whether their order needs a follow-up call.
+-   **Brand corrected** to CPP Farm Store, same fix as above.
+
+![Deluxe Theme Gift Box product page after the inventory and description fix.](images/Product-Deluxe-Gift-Box.png){#fig-product2}
+
+As shown in @fig-product1 and @fig-product2, both fixes were about removing friction that would otherwise stop a ready-to-buy customer: a sold-out badge or an ambiguous shipping sentence is a small thing on a spreadsheet, but it is the entire experience for the customer who hits it.
+
+# Collection Page Improvement Evidence {#sec-collection-evidence}
+
+The **Specialty Foods** collection (honey, salsa, orange juice, fresh baked bread) had a written description already in place from earlier work, but **no collection banner image** — it rendered with a blank space where every other collection's visual identity would normally sit. This session added a banner image sourced from the collection's own Farm Store Salsa product photography, so the page has a consistent visual identity instead of empty space.
+
+The same restocking fix described above also applies here: before this session, the Specialty Foods collection's own in-stock filter would have shown 3 of 4 products as out of stock; after the fix, the collection's Availability filter shows **4 in stock / 0 out of stock**.
+
+![Specialty Foods collection page with the new banner image and full in-stock catalog.](images/Collection-Specialty-Foods.png){#fig-collection}
+
+# Customer Experience Features {#sec-cx-features}
+
+At least three concrete customer experience improvements were made this session:
+
+1.  **Fixed "phantom sold out" products.** Farm Store Salsa, Raw Local Honey, and the Fresh Baked Bread all showed zero inventory despite being actively promoted on the homepage and in collections. A customer clicking through from a featured product card to a sold-out page is one of the fastest ways to lose a sale — this was restocked across all three products (plus the Deluxe Theme Gift Box) so every promoted product is actually purchasable.
+2.  **Corrected inconsistent brand identity.** Several products (including CPP Farms Ice Cream and the Deluxe Theme Gift Box) carried the internal dev-store handle as their brand instead of "CPP Farm Store." This is invisible in casual browsing but matters for trust signals, filtering by brand, and — as documented in the GP3 retail-media feed — for how the catalog would actually perform if listed on Google Shopping or Amazon.
+3.  **Clarified ambiguous shipping language on gift boxes.** The Deluxe Theme Gift Box's shipping policy was a single run-on sentence mixing pickup and shipping information. Restructuring it into two clearly labeled lines (**Pickup:** / **Shipping:**) makes the fulfillment expectation scannable instead of something the customer has to parse.
+4.  **Added visual identity to a collection page.** The Specialty Foods collection previously had no banner image; adding one brings it in line with the rest of the storefront's visual polish.
+
+::: {.callout-tip title="Why data fixes count as customer experience work"}
+Storefront design isn't only what's visually on the page — it's whether the page a customer lands on actually works the way the design implies it should. A beautifully designed "Shop Specialty Foods" card on the homepage is a broken promise if the products behind it are sold out.
+:::
+
+# Customer Journey Reflection
+
+A customer arriving at the CPP Farm Store homepage sees an immediate, unambiguous value proposition — fresh, local, campus-connected products — paired with two clear paths forward: browse general products or go straight to gift options. From there, the "Shop by Collections" grid lets the customer self-select by intent (a student wants Student Snacks & Drinks, a parent wants Gifts, a Pomona neighbor wants Fresh Produce) rather than forcing everyone through the same generic product list. Clicking into a category like Specialty Foods now lands the customer on a page with a proper banner image, working availability filters, and a grid of products that are all genuinely in stock — a meaningful improvement over a page where clicking "Add to Cart" could previously fail. From a collection or a homepage-featured product card, the customer reaches a product page with a clear price, an honest in-stock/pickup-only badge, and (for gift boxes) an unambiguous answer to "can this be shipped." That last step — product discovery to a confident add-to-cart decision — is where this session's fixes mattered most, because good homepage design can bring a customer to the door, but broken product data is what turns them away right before checkout.
+
+# CPP Farm Store Application Reflection
+
+The single biggest takeaway for the real CPP Farm Store is that storefront design and storefront *data hygiene* are the same job, not two separate ones. A visually polished homepage with sold-out or mislabeled products underneath it will convert worse than a plainer homepage backed by accurate inventory and consistent product information — and that gap is invisible until someone actually clicks through every path, the way this session did. If the Farm Store builds a real ecommerce presence, whoever owns it should treat inventory accuracy, consistent brand/vendor tagging, and plain-language fulfillment policies (pickup vs. shipping, spelled out rather than implied) as core storefront design work, not backend housekeeping that can wait. This also connects directly to the retail-media work from GP3: a product feed sent to Google Merchant Center or Amazon inherits every one of these same data problems, so fixing them here is not a one-assignment task — it is the maintenance work that makes every other channel (search, ads, the storefront itself) trustworthy at the same time.
+
+# Appendix
+
+## Published Website and Repository Links
+
+-   **Published GitHub Pages report:** <https://mjshawell.github.io/IBM-6540-IBM-6300/>
+
+-   **GitHub repository:** [IBM-6540-IBM-6300 Repository](https://github.com/mjshawell/IBM-6540-IBM-6300)
+
+-   **Live Shopify prototype (password protected):** <https://cpp-farm-store-dev.myshopify.com/>
+
+## Before Final Submission
+
+The four figures in this report (@fig-homepage, @fig-product1, @fig-product2, @fig-collection) are placeholders generated for this draft, following the same "replace before submission" workflow used in the Assignment 1 template. Each placeholder image states the exact live URL and the specific elements to capture. Swap in the real screenshots, then re-render, before submitting to Canvas.
