@@ -1,0 +1,165 @@
+---
+title: "OACP-W06 - Shopify to Google Merchant Center Connection Lab"
+author: "Mickyas Shawel"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-expand: 2
+    number-sections: true
+    code-link: true
+    code-tools: true
+    code-overflow: wrap
+    embed-resources: true
+    theme: cosmo
+editor: visual
+execute:
+  freeze: auto
+  echo: false
+  warning: false
+  message: false
+---
+
+```{=html}
+<style>
+:root {
+  --farm-green: #0b4a33;
+  --farm-green-2: #203c26;
+  --farm-tan: #bf9568;
+  --farm-brown: #4e3a32;
+  --farm-cream: #f7f2ea;
+  --farm-border: #ded2c4;
+}
+
+body {
+  color: var(--farm-brown);
+}
+
+h1, h2, h3, h4 {
+  color: var(--farm-green);
+}
+
+.hero-box {
+  background: linear-gradient(135deg, #f7f2ea 0%, #ffffff 100%);
+  border: 1px solid var(--farm-border);
+  border-radius: 22px;
+  padding: 1.5rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .75rem;
+}
+
+.badge {
+  background: var(--farm-green);
+  color: white;
+  border-radius: 999px;
+  padding: .35rem .8rem;
+  font-weight: 700;
+  font-size: .9rem;
+}
+
+.badge.tan {
+  background: var(--farm-tan);
+}
+
+.caption-note {
+  font-size: .92rem;
+  color: #6f6258;
+  font-style: italic;
+}
+
+.screenshot-note {
+  background: #fff8ec;
+  border-left: 5px solid var(--farm-tan);
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+img {
+  border-radius: 14px;
+  border: 1px solid var(--farm-border);
+}
+</style>
+```
+
+# Introduction
+
+This report documents a connection attempt between the CPP Farm Store Shopify practice store (`cpp-farm-store-dev.myshopify.com`) and Google Merchant Center, using Shopify's built-in **Google & YouTube** sales channel. The store carries 15 active products across 10 collections (Fresh Produce, Specialty Foods, Student Snacks & Drinks, Gift Baskets, Gifts, Fruit Boxes, and more), each with a title, description, price, product image, and category, and it has a populated navigation menu plus standing pages for Our Story, Contact, Visit/Pickup & Gift Order FAQ, Farm Rewards, and Your Privacy Choices — the store readiness baseline this assignment asks for.
+
+::: {.callout-note title="What this lab actually found"}
+The Google & YouTube channel was **already installed and partially configured** on this store from earlier work in the term project: a Google account and a Google Merchant Center account (ID `5823209921`) are both connected. The attempt in this lab picks up from that existing connection and pushes it as far as it will go, which turns out to be blocked by one specific, well-documented Shopify platform restriction rather than anything about the product catalog itself.
+:::
+
+# Connection Attempt Evidence {#sec-connection-evidence}
+
+The Google & YouTube channel appears in Settings → Sales channels, alongside Online Store, Inbox, and Point of Sale (@fig-channels-list).
+
+![Sales channels list in Shopify admin, showing Google & YouTube already installed.](images/GMC-Sales-Channels-List.jpg){#fig-channels-list}
+
+Opening the channel shows the connection itself is Active, installed four weeks prior to this session, with Products, Orders, and Store analytics permissions granted (@fig-channel-active).
+
+![Google & YouTube channel detail page, showing an Active connection and granted permissions.](images/GMC-Channel-Detail-Active.jpg){#fig-channel-active}
+
+Opening the app's setup checklist (Get started with Google & YouTube) shows the real-time account verification in progress — the Merchant Center account (`5823209921`) briefly re-checked its connection status live during this session before settling (@fig-checking-account), landing at a stable **3 of 5 tasks completed** state (@fig-checklist).
+
+![The app actively re-verifying the connected Google Merchant Center account (mid-check).](images/GMC-Setup-Checking-Account.jpg){#fig-checking-account}
+
+![Stable setup checklist: Google account connected, Merchant Center account connected, payment method and refund policy both satisfied. Two requirements remain open.](images/GMC-Setup-Checklist.jpg){#fig-checklist}
+
+# Product Sync or Product Listing Evidence {#sec-product-sync}
+
+The setup checklist never reached a dedicated product-sync or product-listing screen — it stops at the "Check your online store requirements" step, which sits upstream of product syncing in Shopify's own onboarding flow. That said, the Shopify Admin Products list already shows every one of the 15 active products carrying a **Channels: 5** count (@fig-products), which was cross-checked directly against the Shopify Admin API: querying `publishedOnPublication` for the Google & YouTube publication ID returned `true` for every product sampled (Gift Card, Holiday Basket, Breakfast Theme Gift Box, Avocado/Satsuma Fruit Box, Citrus Fruit Box).
+
+![Product catalog in Shopify admin. Every active product shows a Channels count of 5, meaning it is already flagged as published to Google & YouTube among other channels.](images/GMC-Product-Catalog.jpg){#fig-products}
+
+So the products themselves are **flagged as published on the Shopify side**, but that is a publication flag inside Shopify, not confirmation that Google has ingested, reviewed, or approved them in Merchant Center. No product-level warnings, disapprovals, or "needs attention" flags were visible anywhere in the admin, because the flow never got far enough to run Google's own data-quality checks — those only run after the storefront-requirements gate below is cleared. In other words: the products didn't fail to sync, but the sync step was never reached.
+
+# Setup Barriers and Warnings {#sec-barriers}
+
+One item on the checklist is a hard blocker, and one is unconfirmed:
+
+**"Create an online store" / "Remove your online store password."** Clicking into Preferences shows the storefront's Password protection toggle in a locked, disabled state, with Shopify's own banner explaining why: *"Your online store is in development. To let visitors access your store, give them the password."* (@fig-password-locked). This is not a setting I forgot to flip — the toggle cannot be changed from this screen at all while the store is on Shopify's development-store tier (no paid plan attached). The Pages list in admin surfaces the same restriction from a different angle, with a **"Store access is restricted — Only visitors with the password can access your online store"** banner sitting above an otherwise complete set of pages (Our Story, Contact, Visit/Pickup & Gift Order FAQ, Farm Rewards, Your Privacy Choices) (@fig-pages-restricted). Google Merchant Center requires a crawlable, non-password-walled storefront to verify a website and approve a feed; a development store cannot satisfy that no matter how well the catalog itself is built.
+
+![Password protection toggle, locked in the "on" position with Shopify's own explanation that this is a development-store restriction.](images/GMC-Password-Protection-Locked.jpg){#fig-password-locked}
+
+![The Pages list surfaces the same restriction from the storefront-access side: pages are all built and Visible, but the store itself is gated.](images/GMC-Pages-Access-Restricted.jpg){#fig-pages-restricted}
+
+**"Confirm that you've added contact information to your online store."** This checklist item remained unconfirmed at the time of this lab. The store does have a Contact page live in the Pages list, so the underlying content likely exists; Google's checklist appears to want an explicit confirmation click rather than just detecting the page, and that confirmation step was not reachable while the password-removal item above stays open.
+
+No product-data-specific warnings (missing images, missing prices, missing categories, disapproved items) appeared anywhere in this session, because the flow stops at the store-level gate before Google's product-level review would run.
+
+# Fixes Needed {#sec-fixes}
+
+Two things would need to change before this specific store could move further through Merchant Center setup, and both are store-level rather than product-level:
+
+Removing the storefront password would require taking `cpp-farm-store-dev` off Shopify's development-store tier and onto an active paid plan — appropriate for a real launch, but deliberately not something to do to a class practice store. A real business in this position would simply build on a store that's already on a paid plan from day one, so this barrier would not exist for them.
+
+Confirming contact information is a smaller, mechanical step: once the store is publicly reachable, revisiting the checklist and clicking through that confirmation (backed by the Contact page that already exists) should clear it in a normal flow.
+
+Beyond this store's specific gate, a business preparing for real Merchant Center approval should still expect Google to run its own review once the site is public: consistent branding across all product listings, real-time accurate inventory instead of static "in stock" flags, explicit shipping and return policy text (not just a linked page), and product images that meet Google's minimum resolution and background requirements. None of those were flagged as problems here only because the review never got that far — they remain open questions rather than confirmed passes.
+
+# CPP Farm Store Reflection {#sec-reflection}
+
+This lab's biggest lesson does not transfer directly to the real CPP Farm Store, and that gap is itself the useful finding. The block encountered here — a locked password toggle tied to Shopify's development-store tier — is a practice-store artifact. The real Farm Store, if it built a proper e-commerce presence, would launch on a paid, publicly accessible plan from the start, so it would never hit this specific wall. What *does* transfer is the order of operations Google enforces: account connection, then store-level trust signals, then product-level data quality, in that sequence, with each gate blocking the next. The real Farm Store should expect the same staged review, just starting one step further along than this practice store could get.
+
+Concretely, before connecting a real Shopify store to Merchant Center, the Farm Store should have in place: a public, always-on storefront with no access wall which can only be overturned when developed websie is transfered to owner (client); since GP3's product-feed audit already found "we'll contact you" language standing in for real shipping terms on several items; verified contact information and a real business address, since Google's local listings features depend on that being accurate; and clean, consistent product data across every listing, correct vendor/brand field, accurate live inventory instead of static stock claims, and professional photography, all of which the Assignment 5 and GP3 work in this project already found gaps in on the practice store's own catalog. Category assignment matters too: the practice catalog's mix of shippable pantry goods (honey, salsa, baked goods) and non-shippable perishables (fresh produce) is the same split the retail media plan already flagged as needing two different tracks — Local Inventory Ads/free local listings for pickup-only perishables, and standard Shopping Ads for the shelf-stable subset. Finally, credibility signals matter as much as technical setup: a real refund policy, real business hours, and real customer service contact information are what let Google's trust-and-safety review clear a store, not just a technically correct product feed. Getting all of this in place before the first real connection attempt would let a real launch skip the store-level friction this lab ran into and go straight to the product-level review Google's process is actually designed to test.
+
+# Appendix
+
+## Published Website and Repository Links
+
+- **Published GitHub Pages report:** <https://mjshawell.github.io/IBM-6540-IBM-6300/>
+
+- **GitHub repository:** [IBM-6540-IBM-6300 Repository](https://github.com/mjshawell/IBM-6540-IBM-6300)
+
+- **Live Shopify prototype (password protected):** <https://cpp-farm-store-dev.myshopify.com/>
+
+## A Note on Screenshots
+
+All screenshots in this report (@fig-channels-list, @fig-channel-active, @fig-checking-account, @fig-checklist, @fig-password-locked, @fig-pages-restricted, @fig-products) are real, live captures taken directly from the `cpp-farm-store-dev` Shopify admin during the integration session. No Google approval, product publishing, or ad spend was attempted or required, consistent with the assignment's grading note.
