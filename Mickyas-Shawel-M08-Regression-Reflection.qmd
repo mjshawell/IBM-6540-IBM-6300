@@ -1,0 +1,660 @@
+---
+title: "Reflection on Regression and Classification Models with Group Project Data"
+subtitle: "Analytics Objective: Predicting Retail Sales Revenue"
+author: "Mickyas Shawel"
+date: today
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 4
+    toc-expand: 1
+    toc-location: right
+    toc-title: "Contents"
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    code-overflow: wrap
+    highlight-style: github
+    embed-resources: true
+
+execute:
+  warning: false
+  message: false
+  echo: true
+  freeze: false
+---
+
+# Assignment Overview
+
+> **Prompt:** Prepare a Quarto report that applies a complete machine-learning workflow to the group-project data. State the analytics objective, identify the learning type and variable roles, compare alternative methods using 10-fold cross-validation, interpret feature importance, answer the five reflection questions, and publish the QMD and HTML files.
+
+This report uses a customer-oriented approach. The analysis is designed to help a retailer estimate expected revenue before finalizing promotional decisions.
+
+::: callout-tip
+## Customer-oriented perspective
+
+Retail decision-makers need reliable estimates of sales revenue so they can coordinate discounts, marketing investments, product strategy, and seasonal planning.
+:::
+
+# Analytics Objective
+
+## Prompt
+
+> State the analytics objective for the project. Explain whether the objective uses supervised or unsupervised learning, identify the outcome and feature variables, and name the broader machine-learning category.
+
+## Response
+
+The analytics objective is to **build and compare regression models that predict retail sales revenue using promotional, product, location, and calendar information**.
+
+The customer-oriented question is:
+
+> **How accurately can a retailer predict expected sales revenue using information available when planning a promotion?**
+
+### Learning type
+
+This is **supervised learning** because the historical dataset contains a known outcome variable that can be used to train and evaluate predictive models.
+
+### Broader machine-learning category
+
+This is a **regression** problem because the outcome is a continuous dollar amount.
+
+### Variable roles
+
+| Role | Variables |
+|----|----|
+| Outcome | `sales_revenue_usd` |
+| Numeric features | `discount_percentage`, `marketing_spend_usd` |
+| Categorical features | `store_location`, `product_category`, `day_of_the_week`, `holiday_effect`, `month`, `season` |
+| Identifier variables | `store_id`, `product_id` |
+| Excluded from prediction | `units_sold` |
+
+::: callout-warning
+## Target leakage decision
+
+`units_sold` is excluded because it is a same-period sales result. A retailer planning a promotion may not know units sold in advance, so using it would make the model look more accurate than it would be in practice.
+:::
+
+# Setup
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(tidymodels)
+library(janitor)
+library(lubridate)
+library(glmnet)
+library(vip)
+library(knitr)
+library(kableExtra)
+
+tidymodels_prefer()
+set.seed(6540)
+theme_set(theme_minimal(base_size = 13))
+```
+
+# Data Preparation
+
+## Prompt
+
+> Set up the QMD file with the required libraries and data. Prepare the data for the machine-learning workflow.
+
+## Import and transform the data
+
+```{r}
+#| label: import-data
+
+retail <- read_csv(
+  "data/Retail_sales.csv",
+  show_col_types = FALSE
+) |>
+  clean_names() |>
+  mutate(
+    date = as.Date(date),
+    month = month(date, label = TRUE, abbr = TRUE),
+    year = factor(year(date)),
+    season = case_when(
+      month(date) %in% c(12, 1, 2) ~ "Winter",
+      month(date) %in% c(3, 4, 5) ~ "Spring",
+      month(date) %in% c(6, 7, 8) ~ "Summer",
+      TRUE ~ "Fall"
+    ),
+    season = factor(
+      season,
+      levels = c("Winter", "Spring", "Summer", "Fall")
+    ),
+    holiday_effect = factor(
+      holiday_effect,
+      levels = c(FALSE, TRUE),
+      labels = c("Non-Holiday", "Holiday")
+    ),
+    day_of_the_week = factor(
+      day_of_the_week,
+      levels = c(
+        "Monday", "Tuesday", "Wednesday", "Thursday",
+        "Friday", "Saturday", "Sunday"
+      )
+    ),
+    store_location = factor(store_location),
+    product_category = factor(product_category),
+    store_id = factor(store_id),
+    product_id = factor(product_id)
+  )
+
+glimpse(retail)
+```
+
+## Sample characteristics
+
+```{r}
+#| label: sample-characteristics
+
+sample_table <- tibble(
+  Measure = c(
+    "Observations",
+    "Average sales revenue",
+    "Median sales revenue",
+    "Average discount",
+    "Average marketing spend",
+    "Product categories",
+    "Store locations"
+  ),
+  Value = c(
+    scales::comma(nrow(retail)),
+    scales::dollar(mean(retail$sales_revenue_usd, na.rm = TRUE)),
+    scales::dollar(median(retail$sales_revenue_usd, na.rm = TRUE)),
+    paste0(round(mean(retail$discount_percentage, na.rm = TRUE), 2), "%"),
+    scales::dollar(mean(retail$marketing_spend_usd, na.rm = TRUE)),
+    as.character(n_distinct(retail$product_category)),
+    as.character(n_distinct(retail$store_location))
+  )
+)
+
+sample_table |>
+  kable(caption = "Sample characteristics") |>
+  kable_styling(full_width = FALSE)
+```
+
+## Revenue distribution
+
+```{r}
+#| label: fig-revenue-distribution
+#| fig-cap: "Distribution of sales revenue."
+#| fig-width: 8
+#| fig-height: 5
+
+ggplot(retail, aes(x = sales_revenue_usd)) +
+  geom_histogram(bins = 35) +
+  scale_x_continuous(labels = scales::label_dollar()) +
+  labs(
+    title = "Distribution of Sales Revenue",
+    x = "Sales Revenue",
+    y = "Number of Records"
+  )
+```
+
+# Machine-Learning Workflow
+
+## Prompt
+
+> Pick an initial machine-learning method and explain why it is appropriate. Complete data splitting, recipe creation, model specification, fitting, and evaluation.
+
+## Initial method
+
+Multiple linear regression is used as the baseline because it is transparent, widely understood, and easy to communicate to business stakeholders. Ridge and Lasso regression are then tested as alternatives because regularization may improve generalization when the model contains many dummy variables.
+
+## Modeling data
+
+```{r}
+#| label: modeling-data
+
+model_data <- retail |>
+  select(
+    sales_revenue_usd,
+    discount_percentage,
+    marketing_spend_usd,
+    store_location,
+    product_category,
+    day_of_the_week,
+    holiday_effect,
+    month,
+    season,
+    year,
+    store_id,
+    product_id
+  )
+
+model_data |>
+  slice_head(n = 8) |>
+  kable(caption = "Preview of the modeling dataset") |>
+  kable_styling(full_width = FALSE)
+```
+
+## Train/test split
+
+```{r}
+#| label: train-test-split
+
+retail_split <- initial_split(
+  model_data,
+  prop = 0.80,
+  strata = sales_revenue_usd
+)
+
+retail_train <- training(retail_split)
+retail_test <- testing(retail_split)
+
+tibble(
+  Partition = c("Training", "Testing"),
+  Observations = c(nrow(retail_train), nrow(retail_test))
+) |>
+  kable(caption = "Training and testing partitions") |>
+  kable_styling(full_width = FALSE)
+```
+
+## Ten-fold cross-validation
+
+```{r}
+#| label: ten-fold-cv
+
+retail_folds <- vfold_cv(
+  retail_train,
+  v = 10,
+  strata = sales_revenue_usd
+)
+
+tibble(
+  Folds = nrow(retail_folds),
+  Description = "10-fold cross-validation on the training set"
+) |>
+  kable() |>
+  kable_styling(full_width = FALSE)
+```
+
+## Recipe
+
+```{r}
+#| label: model-recipe
+
+retail_recipe <- recipe(
+  sales_revenue_usd ~ .,
+  data = retail_train
+) |>
+  update_role(store_id, product_id, new_role = "ID") |>
+  step_unknown(all_nominal_predictors()) |>
+  step_novel(all_nominal_predictors()) |>
+  step_dummy(all_nominal_predictors()) |>
+  step_zv(all_predictors()) |>
+  step_normalize(all_numeric_predictors())
+
+summary(retail_recipe) |>
+  kable(caption = "Recipe variable roles") |>
+  kable_styling(full_width = FALSE)
+```
+
+# Baseline Linear Regression
+
+## Model specification
+
+```{r}
+#| label: linear-model
+
+linear_spec <- linear_reg() |>
+  set_engine("lm")
+
+linear_workflow <- workflow() |>
+  add_recipe(retail_recipe) |>
+  add_model(linear_spec)
+```
+
+## Ten-fold cross-validation
+
+```{r}
+#| label: linear-cv
+
+linear_results <- fit_resamples(
+  linear_workflow,
+  resamples = retail_folds,
+  metrics = metric_set(rmse, mae, rsq)
+)
+
+linear_metrics <- collect_metrics(linear_results)
+
+linear_metrics |>
+  select(.metric, mean, std_err) |>
+  kable(
+    caption = "Cross-validated linear regression performance",
+    digits = 3
+  ) |>
+  kable_styling(full_width = FALSE)
+```
+
+# Alternative Regression Methods
+
+## Prompt
+
+> What alternative methods can be used to improve the metrics? Try them.
+
+## Ridge regression
+
+```{r}
+#| label: ridge-regression
+
+ridge_spec <- linear_reg(
+  penalty = tune(),
+  mixture = 0
+) |>
+  set_engine("glmnet")
+
+ridge_workflow <- workflow() |>
+  add_recipe(retail_recipe) |>
+  add_model(ridge_spec)
+
+penalty_grid <- tibble(
+  penalty = 10 ^ seq(-4, 0, length.out = 8)
+)
+
+ridge_results <- tune_grid(
+  ridge_workflow,
+  resamples = retail_folds,
+  grid = penalty_grid,
+  metrics = metric_set(rmse, mae, rsq)
+)
+
+ridge_best <- select_best(ridge_results, metric = "rmse")
+
+ridge_best |>
+  kable(caption = "Best Ridge penalty") |>
+  kable_styling(full_width = FALSE)
+```
+
+## Lasso regression
+
+```{r}
+#| label: lasso-regression
+
+lasso_spec <- linear_reg(
+  penalty = tune(),
+  mixture = 1
+) |>
+  set_engine("glmnet")
+
+lasso_workflow <- workflow() |>
+  add_recipe(retail_recipe) |>
+  add_model(lasso_spec)
+
+lasso_results <- tune_grid(
+  lasso_workflow,
+  resamples = retail_folds,
+  grid = penalty_grid,
+  metrics = metric_set(rmse, mae, rsq)
+)
+
+lasso_best <- select_best(lasso_results, metric = "rmse")
+
+lasso_best |>
+  kable(caption = "Best Lasso penalty") |>
+  kable_styling(full_width = FALSE)
+```
+
+# Model Comparison
+
+## Prompt
+
+> Compare all methods using 10-fold cross-validation. Which method is best? Does the result make sense?
+
+```{r}
+#| label: comparison-table
+
+linear_compare <- linear_metrics |>
+  filter(.metric == "rmse") |>
+  transmute(
+    Model = "Linear Regression",
+    RMSE = mean,
+    Standard_Error = std_err
+  )
+
+ridge_compare <- show_best(
+  ridge_results,
+  metric = "rmse",
+  n = 1
+) |>
+  transmute(
+    Model = "Ridge Regression",
+    RMSE = mean,
+    Standard_Error = std_err
+  )
+
+lasso_compare <- show_best(
+  lasso_results,
+  metric = "rmse",
+  n = 1
+) |>
+  transmute(
+    Model = "Lasso Regression",
+    RMSE = mean,
+    Standard_Error = std_err
+  )
+
+model_comparison <- bind_rows(
+  linear_compare,
+  ridge_compare,
+  lasso_compare
+) |>
+  arrange(RMSE)
+
+model_comparison |>
+  mutate(
+    RMSE = scales::dollar(RMSE),
+    Standard_Error = scales::dollar(Standard_Error)
+  ) |>
+  kable(caption = "Ten-fold cross-validated model comparison") |>
+  kable_styling(full_width = FALSE)
+```
+
+```{r}
+#| label: fig-model-comparison
+#| fig-cap: "Cross-validated RMSE by model."
+#| fig-width: 8
+#| fig-height: 5
+
+model_comparison |>
+  ggplot(aes(x = reorder(Model, RMSE), y = RMSE)) +
+  geom_col() +
+  geom_errorbar(
+    aes(
+      ymin = RMSE - Standard_Error,
+      ymax = RMSE + Standard_Error
+    ),
+    width = 0.15
+  ) +
+  coord_flip() +
+  scale_y_continuous(labels = scales::label_dollar()) +
+  labs(
+    title = "Cross-Validated RMSE",
+    x = NULL,
+    y = "Mean RMSE"
+  )
+```
+
+The preferred model is the method with the lowest cross-validated RMSE. A regularized method may outperform ordinary linear regression because the recipe creates many indicator variables and some predictors may contain overlapping information.
+
+# Final Model Evaluation
+
+## Finalize the selected model
+
+```{r}
+#| label: select-final-model
+
+best_model_name <- model_comparison |>
+  slice_min(RMSE, n = 1, with_ties = FALSE) |>
+  pull(Model)
+
+if (best_model_name == "Linear Regression") {
+  final_workflow <- linear_workflow
+} else if (best_model_name == "Ridge Regression") {
+  final_workflow <- finalize_workflow(
+    ridge_workflow,
+    ridge_best
+  )
+} else {
+  final_workflow <- finalize_workflow(
+    lasso_workflow,
+    lasso_best
+  )
+}
+
+best_model_name
+```
+
+## Held-out test set
+
+```{r}
+#| label: final-test-set
+
+final_fit <- last_fit(
+  final_workflow,
+  split = retail_split,
+  metrics = metric_set(rmse, mae, rsq)
+)
+
+collect_metrics(final_fit) |>
+  select(.metric, .estimate) |>
+  kable(
+    caption = "Final test-set performance",
+    digits = 3
+  ) |>
+  kable_styling(full_width = FALSE)
+```
+
+## Actual versus predicted revenue
+
+```{r}
+#| label: fig-actual-predicted
+#| fig-cap: "Actual versus predicted revenue on the held-out test set."
+#| fig-width: 7
+#| fig-height: 6
+
+final_predictions <- collect_predictions(final_fit)
+
+final_predictions |>
+  sample_n(min(3000, nrow(final_predictions))) |>
+  ggplot(aes(x = sales_revenue_usd, y = .pred)) +
+  geom_point(alpha = 0.25) +
+  geom_abline(
+    slope = 1,
+    intercept = 0,
+    linetype = 2
+  ) +
+  scale_x_continuous(labels = scales::label_dollar()) +
+  scale_y_continuous(labels = scales::label_dollar()) +
+  labs(
+    title = "Actual Versus Predicted Revenue",
+    x = "Actual Revenue",
+    y = "Predicted Revenue"
+  )
+```
+
+# Feature Importance
+
+## Prompt
+
+> Produce a feature-importance chart. Is the result reasonable? Why or why not?
+
+```{r}
+#| label: fig-feature-importance
+#| fig-cap: "Top standardized coefficients in the selected model."
+#| fig-width: 8
+#| fig-height: 7
+
+final_training_fit <- fit(
+  final_workflow,
+  data = retail_train
+)
+
+importance_table <- final_training_fit |>
+  extract_fit_parsnip() |>
+  tidy() |>
+  filter(term != "(Intercept)") |>
+  mutate(importance = abs(estimate)) |>
+  slice_max(importance, n = 15)
+
+importance_table |>
+  ggplot(aes(
+    x = reorder(term, importance),
+    y = importance
+  )) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Top Predictive Features",
+    x = NULL,
+    y = "Absolute Standardized Coefficient"
+  )
+```
+
+The result is reasonable when variables connected to promotional intensity, product differences, location, and seasonal timing appear among the largest coefficients. However, coefficient importance is predictive rather than causal.
+
+::: callout-caution
+## Interpretation limitation
+
+A feature with a large coefficient contributes strongly to prediction after preprocessing, but the model does not prove that changing that feature will cause revenue to change.
+:::
+
+# Module 4 Reflection Questions
+
+## Question 1: Why is a train/test split necessary?
+
+A train/test split separates model development from final evaluation. The training set is used to learn the model, while the test set estimates how accurately the finished workflow performs on unseen observations.
+
+## Question 2: Why use 10-fold cross-validation?
+
+Ten-fold cross-validation provides a more stable estimate than a single validation split. Each observation in the training data is used for validation once and for model fitting nine times.
+
+## Question 3: What is the purpose of a recipe?
+
+A recipe stores preprocessing steps in a reproducible workflow. It also prevents leakage by learning preprocessing information from the analysis portion of each resample before applying it to the assessment portion.
+
+## Question 4: How do Ridge and Lasso differ?
+
+Ridge regression shrinks coefficients toward zero using an (L_2) penalty but usually retains every predictor. Lasso regression uses an (L_1) penalty and can reduce some coefficients exactly to zero.
+
+## Question 5: Which metrics should guide model selection?
+
+RMSE is the primary metric because it is expressed in revenue units and penalizes large errors. MAE provides an intuitive average absolute error, while (R\^2) describes how much variation the model explains.
+
+# Overall Reflection
+
+The exercise demonstrates that model quality depends on more than selecting an algorithm. A professional workflow requires a customer-oriented objective, realistic feature selection, separation of training and testing data, reproducible preprocessing, cross-validation, model comparison, and careful interpretation.
+
+The decision to exclude `units_sold` is especially important. Including it would likely improve prediction metrics, but the model would be less useful for planning if units sold are unknown when the prediction is needed.
+
+# Conclusion
+
+The report compares linear, Ridge, and Lasso regression using a shared recipe and 10-fold cross-validation. The model with the lowest cross-validated RMSE is evaluated on a held-out test set. Feature importance then helps translate the predictive model into information a retail decision-maker can understand.
+
+# Appendix
+
+## Appendix A: GitHub repository
+
+Replace the link after creating the repository:
+
+[View the GitHub repository](https://github.com/USERNAME/REPOSITORY)
+
+## Appendix B: Published HTML report
+
+Replace the link after enabling GitHub Pages:
+
+[Open the published report](https://USERNAME.github.io/REPOSITORY/Mickyas-Shawel-M08-Regression-Reflection.html)
+
+## Appendix C: Session information
+
+```{r}
+#| label: session-info
+#| code-fold: true
+
+sessionInfo()
+```
