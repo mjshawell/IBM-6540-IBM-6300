@@ -1,0 +1,143 @@
+---
+title: "ITP-W08-Shopify Store - Assignment 6 - Checkout, Policies, and Trust Signals"
+author: "Mickyas Shawel"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-expand: 2
+    number-sections: true
+    code-link: true
+    code-tools: true
+    code-overflow: wrap
+    embed-resources: true
+    theme: cosmo
+editor: visual
+execute:
+  freeze: auto
+  echo: false
+  warning: false
+  message: false
+---
+
+```{=html}
+<style>
+:root {
+  --farm-green: #0b4a33;
+  --farm-green-2: #203c26;
+  --farm-tan: #bf9568;
+  --farm-brown: #4e3a32;
+  --farm-cream: #f7f2ea;
+  --farm-border: #ded2c4;
+}
+
+body {
+  color: var(--farm-brown);
+}
+
+h1, h2, h3, h4 {
+  color: var(--farm-green);
+}
+
+.hero-box {
+  background: linear-gradient(135deg, #f7f2ea 0%, #ffffff 100%);
+  border: 1px solid var(--farm-border);
+  border-radius: 22px;
+  padding: 1.5rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.caption-note {
+  font-size: .92rem;
+  color: #6f6258;
+  font-style: italic;
+}
+
+.screenshot-note {
+  background: #fff8ec;
+  border-left: 5px solid var(--farm-tan);
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+img {
+  border-radius: 14px;
+  border: 1px solid var(--farm-border);
+}
+</style>
+```
+
+# Overview
+
+This report documents Assignment 6 — reviewing checkout-related settings and improving store policies and trust signals for the CPP Farm Store Shopify prototype (`cpp-farm-store-dev.myshopify.com`). No real payments were activated or processed; this assignment reviews existing configuration and drafts/improves customer-facing trust content.
+
+::: {.callout-important title="What this assignment actually found"}
+Most of the required policy content — the return/refund policy and the shipping/pickup policy — already existed on the store from earlier work in this project. The one genuine gap found during this review was the **Contact information** field under Settings → Policies, which was empty. That field was filled in and published during this session, so the "add or draft" requirement for contact information reflects a real fix, not just documentation of existing content.
+:::
+
+# Checkout Review Evidence {#sec-checkout}
+
+Three checkout-related settings areas were reviewed directly in the Shopify Admin.
+
+## Checkout Settings
+
+@fig-checkout shows the Checkout settings page: an Active checkout configuration, customer contact method set to email, and customer information requirements (full name required, shipping address phone optional).
+
+![Checkout settings in Shopify admin, showing the active configuration and customer contact/information requirements.](images/A6-Checkout-Settings.jpg){#fig-checkout}
+
+## Payments (Test Mode Only)
+
+@fig-payments confirms the store is on a development plan and can only process test payments — Shopify's own banner states *"Development stores can only process test payments"* and *"You're in test mode."* No real payment provider was activated, consistent with the assignment's instructions not to process real transactions.
+
+![Payments settings, showing the store is restricted to test payments on its current development plan.](images/A6-Payments-TestMode.jpg){#fig-payments}
+
+## Shipping and Delivery
+
+@fig-shipping shows the Shipping and delivery settings: one shipping profile covering all products across 2 zones, and **Pickup in store: On** under Additional delivery methods (Local delivery is Off).
+
+![Shipping and delivery settings, confirming in-store pickup is enabled and a shipping profile with 2 zones is configured.](images/A6-Shipping-Delivery.jpg){#fig-shipping}
+
+# Shipping or Pickup Information {#sec-shipping-policy}
+
+The store's written Shipping policy (Settings → Policies → Shipping policy) already covers this requirement in detail (@fig-shipping-policy): the prototype is built primarily around **local pickup**, most products require pickup confirmation before arrival, gift baskets and boxes may need 1–2 business days of preparation, and perishable/frozen items are limited to local pickup only. The policy also notes that if shipping is added in a future version, shipping costs and timelines will be shown at checkout.
+
+![The store's written Shipping and Pickup Policy, emphasizing local pickup and pickup-preparation timing.](images/A6-Shipping-Policy.jpg){#fig-shipping-policy}
+
+# Return/Refund Policy {#sec-refund-policy}
+
+The store's written Return and refund policy (@fig-refund-policy) was already drafted and addresses the specific realities of a farm store catalog: perishable products are generally not eligible for return once picked up, gift baskets may be substituted based on availability and are not eligible for return once prepared, and customers with a damaged, missing, or incorrect item are directed to contact the Farm Store team with their order number so staff can determine whether a replacement, adjustment, or refund is appropriate.
+
+![The store's written Return and Refund Policy, addressing perishable goods and gift-basket substitutions.](images/A6-Return-Refund-Policy.jpg){#fig-refund-policy}
+
+# Privacy Policy or Customer Data Statement {#sec-privacy}
+
+The store uses Shopify's **automated privacy policy** (@fig-privacy), which stays in sync with store settings and Shopify's latest policy templates rather than a static hand-written document. It explains what data `cpp-farm-store-dev` collects, how it is used, and how it relates to the store's Terms of Service, and is dated automatically (last updated August 2, 2026) so it reflects the store's actual current configuration rather than going stale.
+
+![The store's automated Privacy Policy, kept in sync with store settings by Shopify.](images/A6-Privacy-Policy.jpg){#fig-privacy}
+
+# Contact Information {#sec-contact}
+
+This was the one field genuinely missing before this assignment. Settings → Policies → Contact information was empty (@fig-policies-overview shows the full policies list, including the "Required" contact-information entry). During this session, contact information was drafted and published (@fig-contact) explaining that the prototype represents the real CPP Farm Store at Kellogg Ranch, directing customers to the store's Contact page or Shopify Inbox for questions, listing the real Farm Store's address and hours, and clarifying that the prototype does not process real orders or payments. The storefront also has a standing **Contact** page and a **Visit, Pickup & Gift Order FAQ** page in Online Store → Pages from earlier work in the project.
+
+![The full written-policies list in Shopify admin — Return and refund, Privacy, Terms of service, Shipping, Contact information, Legal notice, and Purchase options cancellation policy.](images/A6-Policies-Overview.jpg){#fig-policies-overview}
+
+![Contact information policy, drafted and published during this session after being found empty.](images/A6-Contact-Information.jpg){#fig-contact}
+
+# Trust Signals Reflection {#sec-trust-reflection}
+
+Together, these policies and settings work because they answer the specific questions a first-time customer silently asks before checking out: what happens if this item is out of stock or wrong, is my payment information safe, when and where do I actually get my order, and is there a real person behind this store. A visible, specific return policy (rather than a generic "all sales final") tells a customer the store has thought through what happens when something goes wrong, which lowers the perceived risk of a first purchase. An automated, current privacy policy signals the store takes data handling seriously rather than copy-pasting boilerplate once and never updating it. And contact information — even for a prototype — closes the trust gap that an anonymous-feeling storefront creates; a customer who can see a real address, real hours, and a real way to reach someone is far more likely to complete a purchase than one facing a storefront with no visible way to ask a question.
+
+# CPP Farm Store Application Reflection {#sec-application}
+
+For the real CPP Farm Store, the most important trust signals would be the ones tied to what makes the store unusual: perishable, locally grown, pickup-based products rather than a standard shippable catalog. A clear pickup policy — stating prep time, what happens if a customer is late, and that fresh produce cannot be returned once picked up — matters more here than a generic e-commerce return policy, because it sets expectations for a fundamentally different fulfillment model than most shoppers are used to. Accurate, real contact information and real hours matter especially because the Farm Store's customer base (CPP students, gift buyers, and local shoppers, per the group's earlier customer analysis) includes people unfamiliar with the campus location; a wrong address or vague hours directly costs the store a visit. Finally, because the Farm Store sells food, a visible statement about freshness, sourcing, and how substitutions or issues are handled would do more for customer confidence than a standard privacy policy alone — trust in a farm store is as much about trusting the product as trusting the transaction.
+
+# Appendix
+
+## Published Website and Repository Links
+
+- **Published GitHub Pages report:** <https://mjshawell.github.io/IBM-6540-IBM-6300/>
+
+- **GitHub repository:** [IBM-6540-IBM-6300 Repository](https://github.com/mjshawell/IBM-6540-IBM-6300)
+
+- **Live Shopify prototype (password protected):** <https://cpp-farm-store-dev.myshopify.com/>
