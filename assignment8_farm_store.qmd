@@ -1,0 +1,180 @@
+---
+title: "Assignment 8: Store Testing and Analytics Review"
+subtitle: "CPP Farm Store — Shopify Development Store"
+author: "Mickyas Shawel"
+date: today
+date-format: "MMMM D, YYYY"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    theme: cosmo
+    embed-resources: true
+    code-fold: false
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+## Overview
+
+This report documents a customer journey test of the CPP Farm Store Shopify development store (`cpp-farm-store-dev.myshopify.com`), identifies current strengths and areas for improvement, and reviews available Shopify analytics data. The store is currently in development mode with a password gate active for the public. The testing and review below was conducted from the Shopify Admin perspective and through store preview mode.
+
+**Store URL:** <https://cpp-farm-store-dev.myshopify.com>
+
+------------------------------------------------------------------------
+
+## Customer Journey Test
+
+The customer journey was tested by walking through the following stages: homepage → collection page → product page → cart → checkout preview.
+
+### Stage 1: Homepage
+
+The homepage serves as the primary landing experience for visitors. The store is currently using the default Shopify theme with a Featured Products collection displayed on the home section. The homepage shows 11 active products from the "Featured Products" collection, giving visitors an immediate sense of the store's range — from gift baskets to fresh produce and specialty foods.
+
+The store has 10 collections organized across meaningful categories:
+
+| Collection              | \# Products |
+|-------------------------|-------------|
+| All Products            | 15          |
+| Featured Products       | 11          |
+| CPP Favorites           | 9           |
+| Gifts                   | 9           |
+| Gift Baskets            | 7           |
+| Student Snacks & Drinks | 5           |
+| Fruit Boxes             | 5           |
+| Fresh Produce           | 4           |
+| Specialty Foods         | 4           |
+| Seasonal Bundles        | 2           |
+
+> **Screenshot placeholder — Homepage view:** *(Add screenshot of homepage showing featured products section, navigation, and hero area here.)*
+
+------------------------------------------------------------------------
+
+### Stage 2: Collection Page
+
+From the homepage, navigating to a collection page (e.g., **Gift Baskets**) reveals 7 products sorted by best-selling. Products display with featured images, titles, and starting prices. The product grid is clean and functional. The Gift Baskets collection includes:
+
+- Holiday Basket — \$50.00
+- Breakfast Theme Gift Box — \$50.00
+- Custom Gift Box — \$40.00–\$100.00
+- Deluxe Theme Gift Box — \$75.00
+- Farm Store Gift Basket — \$65.00
+- Avocado / Satsuma Fruit Box — \$40.00
+- Citrus Fruit Box — \$35.00
+
+> **Screenshot placeholder — Collection Page:** *(Add screenshot of the Gift Baskets or All Products collection page here.)*
+
+------------------------------------------------------------------------
+
+### Stage 3: Product Page
+
+Clicking into a product — for example, the **Farm Store Gift Basket (\$65.00)** — shows the product description, price, featured image, and an "Add to Cart" button. The product description reads:
+
+> *"A Farm Store gift basket featuring a curated mix of local goods, snacks, sauces, jams, drinks, and seasonal favorites. Please allow at least 1–2 business days..."*
+
+The product page renders cleanly with the featured image displayed, inventory count, and cart button. Products with multiple variants (e.g., **Custom Gift Box** with \$40/\$50/\$75/\$100 tiers; **CPP Farms Ice Cream** with Pint/\$4.99 and Half Pint/\$2.99) display the variant selector correctly.
+
+> **Screenshot placeholder — Product Page:** *(Add screenshot of an individual product page — e.g., Farm Store Gift Basket or Custom Gift Box — showing image, description, price, and Add to Cart button.)*
+
+------------------------------------------------------------------------
+
+### Stage 4: Cart
+
+After clicking "Add to Cart" on a product, the cart updates to show the selected item, its quantity, and the running total. The cart drawer or cart page displays properly and allows quantity adjustment and item removal.
+
+> **Screenshot placeholder — Cart:** *(Add screenshot of cart with at least one item — e.g., Farm Store Gift Basket — showing product, price, quantity, and subtotal.)*
+
+------------------------------------------------------------------------
+
+### Stage 5: Checkout Preview
+
+Proceeding from the cart to checkout opens the Shopify-managed checkout flow. The checkout page prompts the customer for contact information, shipping address, and shipping method before reaching payment. Since the store is in development mode, no real transaction was completed — the test was carried through to the checkout form entry stage.
+
+> **Screenshot placeholder — Checkout:** *(Add screenshot of the checkout page showing the form fields, order summary sidebar, and CPP Farm Store store name.)*
+
+------------------------------------------------------------------------
+
+## Store Strengths
+
+### Strength 1: Well-Organized Product Catalog
+
+The store has 15 active products organized across 10 meaningful collections including Gift Baskets, Fresh Produce, Specialty Foods, Student Snacks & Drinks, CPP Favorites, and Seasonal Bundles. This taxonomy reflects how a real Farm Store customer would naturally browse — by occasion (gifts), by type (produce, specialty), or by lifestyle (student-friendly). Having products correctly tagged and assigned to multiple relevant collections (e.g., the Breakfast Theme Gift Box appears in both Gift Baskets and Gifts) improves discoverability without duplicating products.
+
+### Strength 2: Strong Product Photography and Descriptions
+
+Every active product in the store has a featured image and a substantive written description. Products like the Farm Store Gift Basket, CPP Farms Ice Cream, and CPP Fresh Orange Juice each have descriptions that communicate the product story, sourcing context, and practical ordering details (pickup availability, lead times). This level of product content is above what many development stores achieve and gives the store a professional, ready-for-launch feel.
+
+### Strength 3: Tiered and Variant-Based Pricing Strategy
+
+Several products use Shopify's variant system intelligently. The Custom Gift Box offers \$40, \$50, \$75, and \$100 budget tiers on a single product page — a thoughtful UX choice that reduces catalog clutter while accommodating different gift budgets. The Gift Card similarly offers \$10/\$25/\$50/\$100 variants. CPP Farms Ice Cream uses variants to offer Pint and Half Pint sizes at different price points. This design pattern is a best practice for farm stores and specialty retailers and reflects strong Shopify product architecture.
+
+------------------------------------------------------------------------
+
+## Areas for Improvement
+
+### Area 1: Missing Collection Banner Images
+
+Nine of the ten collections have no collection image set — only the Specialty Foods collection has one. Collection images display at the top of each collection page and in any grid-style navigation menus. Without them, collection pages feel bare and the navigation lacks visual hierarchy. Before final submission, each major collection (Gift Baskets, Fresh Produce, Student Snacks & Drinks, CPP Favorites) should have a banner image that reflects the category. This is one of the most visible visual gaps in the current store.
+
+### Area 2: Inventory Discrepancies and Zero-Stock Active Products
+
+Several active products show zero or negative inventory:
+
+| Product                | Inventory                          |
+|------------------------|------------------------------------|
+| Seasonal Produce Box   | -1                                 |
+| CPP Fresh Orange Juice | -1                                 |
+| Raw Local Honey        | 0 (but qty shown as 25 in variant) |
+| Local Cold Brew        | 0                                  |
+| Farm Store Salsa       | 0 (but 30 in variant)              |
+| Custom Gift Box        | 0                                  |
+
+Products with zero or negative inventory that remain active and purchasable can create a confusing customer experience — customers may add them to cart and reach checkout before discovering an item is unavailable. For the final submission, each product should either have accurate inventory levels set, be set to "continue selling" with a note, or be put into draft status if not currently available.
+
+### Area 3: Store Password Gate Needs to Be Removed for Final Submission
+
+The store is currently password protected (`cpp-farm-store-dev.myshopify.com/password`), which means no external visitor can access it. For the Week 11 final submission, the password protection will need to be removed so the professor can browse the live store. Additionally, with the password gate active, Shopify's session analytics reflect only visits from logged-in admin users — meaning the analytics data currently available does not represent real customer behavior. Removing the gate before submission will also allow meaningful traffic data to accumulate.
+
+------------------------------------------------------------------------
+
+## Analytics Review
+
+### Shopify Session Data — Last 30 Days
+
+The following data was pulled directly from Shopify Analytics using ShopifyQL:
+
+```         
+FROM sessions SHOW sessions, online_store_visitors
+TIMESERIES day SINCE -30d UNTIL today
+```
+
+| Date Range | Total Sessions | Notable Activity |
+|----|----|----|
+| July 16, 2026 | 34 sessions | Highest single-day traffic (likely admin testing) |
+| July 17–22, 2026 | 5–13 sessions/day | Active development period |
+| Late July–Aug 14, 2026 | 0–7 sessions/day | Intermittent admin visits only |
+| **30-Day Total** | **130 sessions** | All traffic is admin/development |
+
+**Interpretation:** All 130 sessions over the past 30 days are internal development and testing visits, not real customer traffic. This is expected given the store's password-protected status. Session volume peaked on July 16 (34 sessions), which likely corresponds to an active build or review session. The sporadic pattern with many zero-visit days is consistent with a development store that is accessed for configuration work rather than a live storefront receiving organic or paid traffic.
+
+Once the password gate is removed, the analytics dashboard will begin capturing real visitor sessions. Key metrics to monitor at launch will include: sessions, conversion rate, add-to-cart rate, and top-performing collections.
+
+> **Screenshot placeholder — Analytics Dashboard:** *(Add a screenshot of the Shopify Analytics sessions chart or the ShopifyQL output showing the 30-day session trend.)*
+
+------------------------------------------------------------------------
+
+## Improvement Plan
+
+Before the final submission in Week 11, I plan to make four specific improvements to bring the CPP Farm Store to launch-ready condition. First, I will add collection banner images to all major collections — at minimum Gift Baskets, Fresh Produce, Student Snacks & Drinks, and CPP Favorites — using product photography that matches each category's theme. Second, I will audit and correct all inventory levels across the 15 active products, ensuring that zero-inventory products either have accurate stock counts set or are removed from the active storefront to prevent customer confusion at checkout. Third, I will remove the store password gate so the store is publicly accessible and the professor can complete a real end-to-end customer journey test without needing admin credentials. Fourth, I will review the homepage layout and add a brief store introduction section — a short header or hero text that communicates who the Farm Store is, what it sells, and how orders are fulfilled (pickup vs. shipping) — since the current homepage drops visitors directly into the product grid without context.
+
+------------------------------------------------------------------------
+
+## Appendix
+
+- **GitHub Repository:** *(Add your GitHub repo URL here)*
+- **GitHub Pages Published URL:** *(Add your GitHub Pages URL here)*
+- **Shopify Store (Admin):** <https://cpp-farm-store-dev.myshopify.com/admin>
+- **Store Public URL:** <https://cpp-farm-store-dev.myshopify.com> *(Password protected until final submission)*
