@@ -1,0 +1,75 @@
+---
+title: "Google Shopping Ads Certification Part 3 — Certification Exam"
+subtitle: "IBM 6300 | CPP Farm Store | Individual Certification"
+author: "Mickyas Shawel"
+date: today
+date-format: "MMMM D, YYYY"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: false
+    theme: cosmo
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+------------------------------------------------------------------------
+
+## Certification Completion
+
+The following screenshot confirms successful completion of the **Google Shopping Ads Certification** assessment through Google Skillshop.
+
+> ![](images/jqd0z5fv_1786773663029.pdf)
+
+------------------------------------------------------------------------
+
+## Final Application Summary
+
+### Overview
+
+Completing the Google Shopping Ads Certification through Google Skillshop marked the final step in a three-part individual certification series that ran alongside the CPP Farm Store group consulting project in IBM 6300. The certification process — which included foundational modules on Shopping Ads mechanics, campaign types, Performance Max strategy, and measurement — reinforced and formalized knowledge that was directly applicable to the work our group was doing in parallel: building a Shopify prototype for CPP Farm Store and exploring how that store could connect to Google's retail advertising infrastructure.
+
+### Three Most Useful Concepts
+
+The three concepts I found most practically valuable from the certification process were product feed structure, Performance Max campaign architecture, and measurement through conversion tracking.
+
+Understanding **product feed structure** was immediately relevant because everything in Shopping Ads depends on the quality and completeness of the product data submitted to Google Merchant Center. A Shopping campaign cannot run without a feed, and a feed is only useful if the titles, descriptions, prices, GTINs, and product categories are accurate and properly formatted. This framed our Shopify product catalog work differently — every product description we wrote, every category we assigned, and every image we selected was not just a storefront decision but a potential feed attribute that would determine whether that product appeared in Google Shopping results.
+
+**Performance Max** was the second concept that shifted my understanding of how modern retail campaigns actually work. Rather than managing separate Search, Display, Shopping, and YouTube campaigns, Performance Max consolidates them into a single campaign driven by Google's machine learning and asset-level creative inputs. The implication for a store like CPP Farm Store is significant: a single well-configured PMax campaign with strong product data and audience signals could deliver across every Google surface simultaneously, which is a meaningful capability for a small operation with a limited marketing team.
+
+The third concept was **measurement and attribution**. The certification covered how conversion tracking ties ad spend back to actual purchases and how micro-conversions — add-to-cart events, product page views, checkout initiations — give the algorithm useful signals even before a purchase occurs. This gave me a much clearer picture of why GA4 integration with Shopify is not just an analytics nicety but a functional requirement for running a Shopping campaign effectively.
+
+### Application to CPP Farm Store's Omnichannel Opportunities
+
+CPP Farm Store operates in a genuinely omnichannel context — it has a physical storefront on the Cal Poly Pomona campus and a growing Shopify-based digital presence. The certification helped me see that omnichannel retail is not just about having both a website and a store, but about connecting the two through shared product data, consistent inventory signals, and unified measurement.
+
+For the Farm Store specifically, Shopping Ads could serve as the bridge between its digital storefront and the discovery layer — the moment a student, faculty member, or community customer searches Google for "local honey Pomona" or "farm fresh produce near me" and encounters a Farm Store product listing in the Shopping tab. That kind of local discovery is not something social media alone can replicate at the same intent level. The certification helped me articulate to our group why getting the Merchant Center connected and the product feed structured correctly was a foundational step, not an advanced one.
+
+The locked storefront password issue we encountered when attempting to connect our Shopify prototype to Merchant Center — documented in Part 2 of this certification series — was also clarified by the certification content. The requirement for a public, live storefront before Merchant Center approval is part of Google's feed review and policy compliance process, not an arbitrary barrier. Understanding that made it easier to explain to our group why the final submission would need the password removed before the store could realistically move toward Shopping Ads activation.
+
+### Personal Contribution and Professional Reflection
+
+Within the group project, I took the lead on the Shopify-to-Google Merchant Center connection attempt, documented the setup flow, identified the storefront password as the blocking issue, and wrote the CPP Farm Store application reflection across the certification assignments. The Shopping Ads certification gave me the vocabulary and framework to connect those technical steps to the broader retail media strategy they support.
+
+The part of Shopping Ads I now feel most confident discussing professionally is the relationship between product feed quality and campaign performance. Most conversations about Google Ads focus on bidding strategy and budget allocation — but the certification made clear that for Shopping specifically, the product data is the creative. A well-structured title with the right keywords, accurate pricing, and a quality image determines whether an ad appears and whether it converts. That insight is applicable in any retail or e-commerce role.
+
+### Resume and LinkedIn Application
+
+On a resume or LinkedIn profile, this certification would be listed as:
+
+> **Google Shopping Ads Certification** — Google Skillshop *(2026)* Proficient in product feed structure, Google Merchant Center setup, Performance Max campaign architecture, and Shopping Ads measurement and attribution. Applied to a live Shopify retail prototype as part of a graduate-level omnichannel retailing consulting project.
+
+This positions the certification not just as a credential but as applied experience — which is the distinction that matters in a marketing or e-commerce role interview.
+
+------------------------------------------------------------------------
+
+## Appendix
+
+- **GitHub Repository:** <https://github.com/mjshawell/IBM-6540-IBM-6300>
+- **GitHub Pages Published URL:** <https://mjshawell.github.io/IBM-6540-IBM-6300/Mickyas-Shawel-ITP-Shopping-Ads-Cert-Part3.html>
+- **Google Skillshop:** <https://skillshop.withgoogle.com>
+- **CPP Farm Store Shopify Store:** <https://cpp-farm-store-dev.myshopify.com>
