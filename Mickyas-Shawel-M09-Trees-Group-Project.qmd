@@ -684,28 +684,5 @@ For the retail project, the most useful outcome is therefore not just a predicti
 Replace the placeholders below after the files have been pushed and GitHub Pages has been published.
 
 - **GitHub Repository:** <https://github.com/mjshawell/IBM-6540-IBM-6300/tree/main>
-- **Published HTML / GitHub Pages:**
 
-## Submission Checklist
-
-- [x] Analytics objective stated
-- [x] Supervised learning identified
-- [x] Outcome and features identified
-- [x] Regression task identified
-- [x] Regression decision tree selected and justified
-- [x] Data split created
-- [x] Recipe created
-- [x] Model specified and fitted
-- [x] Test-set evaluation included
-- [x] Random Forest alternative included
-- [x] XGBoost alternative included
-- [x] 10-fold cross-validation included
-- [x] Model comparison included
-- [x] Feature-importance chart included
-- [x] Requested `cost_complexity` values evaluated
-- [x] Train/test pruning chart included
-- [x] Optimal `cp` selected
-- [x] Leaf-node count calculated
-- [x] Plain-English overfitting explanation included
-- [ ] GitHub repository link added after publication
-- [ ] GitHub Pages link added after publication
+- **Published HTML / GitHub Pages:** <https://mjshawell.github.io/IBM-6540-IBM-6300/Mickyas-Shawel-M09-Trees-Group-Project.html>
