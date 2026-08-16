@@ -1,0 +1,552 @@
+---
+title: "Improving LADD Coffee's Digital Strategy"
+subtitle: "Proposal Presentation"
+author: "Mickyas Shawel"
+institute: "MSDM | Cal Poly Pomona"
+date: today
+format:
+  revealjs:
+    theme: default
+    width: 1600
+    height: 900
+    footer: "Improving LADD Coffee's Digital Strategy"
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    toc: true
+    toc-depth: 1
+    slide-number: true
+    scrollable: true
+    smaller: true
+    code-fold: false
+    code-overflow: wrap
+    number-sections: false
+    embed-resources: true
+    css: styles.css
+editor: visual
+execute:
+  echo: false
+  warning: false
+  message: false
+  freeze: auto
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(scales)
+
+# Analyst-defined framework for the proposal.
+# These are NOT observed LADD Coffee performance metrics.
+channel_plan <- tribble(
+  ~channel,                ~priority_score, ~primary_role,
+  "Google Business/Search", 5,              "Capture local intent",
+  "Instagram / Reels",      5,              "Build visual discovery",
+  "TikTok / Short Video",   4,              "Create local awareness",
+  "Website / Landing Page", 4,              "Own brand + conversion",
+  "Email / SMS",            3,              "Drive repeat visits"
+)
+
+measurement_plan <- tribble(
+  ~journey_stage, ~example_kpi, ~recommended_source,
+  "Discover",     "Reach / profile views / search impressions", "Social insights + Google",
+  "Consider",     "Menu views / direction requests / saves",    "Website + business profile",
+  "Visit",        "Offer redemptions / attributed visits",      "POS + campaign codes",
+  "Return",       "Repeat purchase / subscriber growth",        "POS + email/SMS"
+)
+```
+
+# LADD Coffee: A New Local Brand
+
+:::::: columns
+::: {.column width="58%"}
+## The opportunity
+
+LADD Coffee is a newly opened specialty café in **West Covina, California**, operating at **987 S. Glendora Ave., Unit 3**.
+
+Public coverage describes the shop as a **Korean specialty café** with visually distinctive drinks and desserts, including cream-top beverages, matcha drinks, and pastries.
+
+For a new café, the digital challenge is not simply *being online*.
+
+> The goal is to turn local digital discovery into a first visit — and a first visit into repeat behavior.
+:::
+
+:::: {.column width="42%"}
+### Project question
+
+**How can LADD Coffee build a measurable digital strategy that increases local discovery, store visits, and repeat engagement?**
+
+::: {.callout-note title="Project status"}
+This presentation is structured as an analytics and digital-strategy **proposal**. Proposed KPIs and priority scores are planning recommendations, not historical performance results.
+:::
+::::
+::::::
+
+::: notes
+Open by emphasizing that LADD Coffee is a new business, so the strategy should prioritize discoverability and measurement infrastructure before complex optimization.
+:::
+
+# Table of Contents
+
+1.  Business problem
+2.  Analytics objective
+3.  Customer and theory
+4.  Data readiness
+5.  Digital strategy
+6.  Measurement plan
+7.  Methods and next steps
+8.  References
+
+# Business Problem
+
+## New shop, limited digital history
+
+:::::: columns
+:::: {.column width="52%"}
+### Business challenge
+
+A newly opened café has to solve three problems quickly:
+
+::: incremental
+- Become **discoverable** when nearby consumers search for coffee.
+- Give customers a reason to choose LADD over established alternatives.
+- Build enough first-party measurement to understand what actually drives visits and repeat purchases.
+:::
+::::
+
+::: {.column width="48%"}
+### Why this matters
+
+Coffee decisions are often:
+
+- **Local**
+- **Mobile**
+- **Visual**
+- **Time-sensitive**
+- Influenced by reviews, maps, social content, and peer recommendations
+
+A fragmented digital presence can create awareness without producing measurable customer action.
+:::
+::::::
+
+# Analytics Objective
+
+## One primary objective
+
+> **Determine which digital touchpoints most effectively move nearby consumers from awareness to an in-store visit, then use that evidence to prioritize LADD Coffee's marketing effort.**
+
+### Supporting questions {.incremental}
+
+- Which channels generate the most qualified local discovery?
+- Which menu items create the strongest visual/content hooks?
+- Which digital actions are most associated with store-intent signals?
+- Which customers can be encouraged to return?
+
+# Importance
+
+## Build the measurement system early
+
+For an established retailer, analytics often means optimizing years of historical data.
+
+For LADD Coffee, the immediate advantage is different:
+
+::: incremental
+1.  Define useful KPIs **before** large amounts of data accumulate.
+2.  Establish consistent campaign tagging and channel attribution.
+3.  Connect discovery metrics with store-intent and purchase signals.
+4.  Learn which creative and products generate repeatable demand.
+:::
+
+::: {.callout-tip title="Strategic advantage"}
+A new business can design cleaner measurement habits now instead of trying to repair fragmented data later.
+:::
+
+# Customer Behavior Framework
+
+## A journey-based approach
+
+The strategy can be organized around a simple customer journey:
+
+**Discover → Consider → Visit → Return**
+
+::::: columns
+::: {.column width="50%"}
+### Discover & Consider
+
+Potential customers encounter:
+
+- Google Maps / local search
+- Instagram and short-form video
+- Creator or customer posts
+- Reviews and recommendations
+- Menu/product imagery
+:::
+
+::: {.column width="50%"}
+### Visit & Return
+
+The digital experience should make it easy to:
+
+- Get directions
+- Understand the menu
+- Identify signature items
+- Save/share the shop
+- Join an owned audience
+- Receive a reason to return
+:::
+:::::
+
+::: notes
+Connect this to consumer decision journeys: digital media should reduce uncertainty and make the next action obvious.
+:::
+
+# Current Public Signals
+
+## What is already visible online
+
+Public sources provide several useful early signals:
+
+- LADD Coffee LLC was filed in California in **March 2026**.
+- A June 2026 local feature described LADD as a newly opened Korean specialty café in West Covina.
+- Public descriptions emphasize **cream-top drinks, matcha, desserts, and a minimalist café environment**.
+- The physical location is listed as **987 S Glendora Ave., Unit 3, West Covina**.
+
+These signals are useful for positioning, but they are **not enough to evaluate marketing performance**.
+
+::: {.callout-warning title="Data limitation"}
+Public listings can describe the business, but they cannot answer which channels drive store visits, revenue, repeat customers, or customer lifetime value.
+:::
+
+# Data Adequacy
+
+## What we have vs. what we need
+
+```{r}
+#| label: tbl-measurement
+#| tbl-cap: "Recommended measurement structure for the LADD Coffee digital customer journey"
+
+measurement_plan |>
+  knitr::kable(
+    col.names = c("Journey Stage", "Example KPI", "Recommended Data Source"),
+    align = c("l", "l", "l")
+  )
+```
+
+The key gap is **first-party behavioral and transaction data**.
+
+# Additional Data Needed
+
+## Build a practical data foundation
+
+::: incremental
+- Google Business Profile performance
+- Website or landing-page analytics
+- UTM-tagged campaign traffic
+- Instagram/TikTok content metrics
+- POS transactions by day/time/product
+- Promotion or QR-code redemptions
+- Email/SMS opt-ins
+- Repeat-customer indicators
+:::
+
+### Recommended unit of analysis
+
+Where privacy and platform limitations allow, aggregate performance by:
+
+**Date × Channel × Campaign/Content × Customer Action**
+
+This structure supports meaningful comparisons without requiring personally identifiable customer data.
+
+# Digital Strategy
+
+## Prioritize channels by customer role
+
+```{r}
+#| label: fig-channel-priority
+#| fig-cap: "Proposed channel priorities for LADD Coffee's launch-stage digital strategy"
+#| fig-width: 9
+#| fig-height: 5.5
+
+channel_plan |>
+  mutate(channel = fct_reorder(channel, priority_score)) |>
+  ggplot(aes(x = priority_score, y = channel)) +
+  geom_col() +
+  geom_text(
+    aes(label = primary_role),
+    hjust = -0.05,
+    size = 4.2
+  ) +
+  scale_x_continuous(
+    limits = c(0, 7.5),
+    breaks = 0:5
+  ) +
+  labs(
+    x = "Proposed Priority Score (1–5)",
+    y = NULL,
+    caption = "Analyst-defined planning scores; not observed performance data."
+  ) +
+  theme_minimal(base_size = 15) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    plot.caption = element_text(face = "italic")
+  )
+```
+
+::: notes
+Explain that this is a reproducible chart generated from a small planning dataset in R. The scores are recommendations, not measured results.
+:::
+
+# Channel Roles
+
+## Google: capture intent
+
+Optimize the business profile for:
+
+- Accurate hours and location
+- Menu/product photos
+- Signature-item language
+- Review generation and response
+- Direction and call actions
+
+## Social: manufacture discovery
+
+Use Instagram and TikTok to make the product visually memorable:
+
+::: incremental
+- Cream-top preparation
+- Matcha and specialty drink builds
+- Dessert pairings
+- "What to order first" content
+- Customer reactions and UGC
+- West Covina / SGV local discovery hooks
+:::
+
+# Owned Digital Experience
+
+## Give discovery somewhere to convert
+
+A lightweight website or landing page should answer the questions a first-time customer has immediately:
+
+::::: columns
+::: {.column width="50%"}
+### Essential content
+
+- Location and hours
+- Menu / signature products
+- High-quality photography
+- Directions
+- Social links
+- FAQ
+:::
+
+::: {.column width="50%"}
+### Measurement
+
+- GA4
+- UTM conventions
+- Direction-click events
+- Menu-view events
+- Email/SMS signup
+- Offer/QR redemptions
+:::
+:::::
+
+The website should function as a **conversion and measurement layer**, not merely an online brochure.
+
+# Content Strategy
+
+## Make signature products the creative engine
+
+Instead of generic "come visit us" posts, content should give audiences something specific to remember.
+
+### Content pillars {.incremental}
+
+1.  **Signature drinks** — cream tops, matcha, seasonal specialties
+2.  **Craft/process** — preparation, ingredients, barista expertise
+3.  **Dessert pairing** — drinks + pastries
+4.  **Local identity** — West Covina and surrounding community
+5.  **Social proof** — reviews, reactions, UGC, creator visits
+
+::: aside
+Public descriptions of LADD already emphasize visually distinctive drinks and desserts, making product-led storytelling a logical starting point.
+:::
+
+# Measurement Framework
+
+## KPIs by stage
+
+| Stage | Primary Question | Example KPIs |
+|------------------------|------------------------|------------------------|
+| Discover | Are nearby consumers finding LADD? | Search impressions, reach, profile views, video views |
+| Consider | Are they showing intent? | Menu views, saves, shares, direction clicks |
+| Visit | Are digital efforts producing action? | Redemptions, attributed transactions, store traffic proxies |
+| Return | Are we building customer value? | Repeat purchase, subscriber growth, offer response |
+
+# Methods
+
+## Proposed analytics workflow
+
+::: incremental
+1.  **Instrument** the customer journey with consistent events and campaign tags.
+2.  **Collect** channel, content, POS, and promotion data.
+3.  **Wrangle** data into a common date/channel/campaign structure.
+4.  **Describe** performance with funnel and cohort metrics.
+5.  **Compare** channels and creative using normalized KPIs.
+6.  **Test** offers, products, and creative systematically.
+7.  **Recommend** budget and content changes from observed results.
+:::
+
+# Data Wrangling
+
+## Example structure in R
+
+```{r}
+#| echo: true
+
+campaign_data <- tibble(
+  date = as.Date(c("2026-08-01", "2026-08-01", "2026-08-02")),
+  channel = c("Instagram", "Google", "TikTok"),
+  impressions = c(4200, 1800, 5100),
+  actions = c(210, 175, 255)
+) |>
+  mutate(
+    action_rate = actions / impressions,
+    channel_group = case_when(
+      channel == "Google" ~ "Intent",
+      TRUE ~ "Discovery"
+    )
+  )
+
+campaign_data
+```
+
+::: callout-note
+The values above are **illustrative practice data** showing how future LADD Coffee campaign data could be structured and wrangled. They are not actual business results.
+:::
+
+# Sample Characteristics
+
+## What a useful future sample should contain
+
+A meaningful evaluation period should capture:
+
+- Weekdays and weekends
+- Multiple dayparts
+- Several content formats
+- Paid and organic traffic
+- More than one promotion or creative treatment
+- Product-level purchase variation
+- Enough time to observe repeat behavior
+
+The first goal is not a huge dataset. It is a **consistent dataset**.
+
+# Measures
+
+## Core definitions
+
+**Action Rate**
+
+\[ \text{Action Rate} = \frac{\text{Desired Digital Actions}} {\text{Impressions or Sessions}} \]
+
+**Offer Redemption Rate**
+
+\[ \text{Redemption Rate} = \frac{\text{Redeemed Offers}} {\text{Distributed or Viewed Offers}} \]
+
+**Repeat Purchase Rate**
+
+\[ \text{Repeat Purchase Rate} = \frac{\text{Returning Customers}} {\text{Customers Observed}} \]
+
+# Analytics Methods
+
+## Start simple, then increase sophistication
+
+### Phase 1 — Descriptive
+
+- Channel performance
+- Content performance
+- Product mix
+- Day/time patterns
+- Funnel conversion
+
+### Phase 2 — Diagnostic
+
+- Campaign comparisons
+- Cohort behavior
+- Promotion lift
+- Creative-level differences
+
+### Phase 3 — Predictive
+
+Once sufficient data exist:
+
+- Visit/purchase propensity
+- Repeat-purchase classification
+- Customer or product segmentation
+- Demand forecasting
+
+# Recommendations
+
+## First 90 days
+
+::: incremental
+### 1. Own local search
+
+Treat Google Business Profile and local-search accuracy as core conversion infrastructure.
+
+### 2. Build product-led social content
+
+Use signature beverages and desserts as the center of short-form creative.
+
+### 3. Establish first-party measurement
+
+Launch a simple owned landing experience with GA4, UTMs, event tracking, and opt-in capture.
+
+### 4. Connect marketing to transactions
+
+Use trackable offers, QR codes, POS tags, or campaign-specific promotions to create attribution signals.
+
+### 5. Create a test-and-learn rhythm
+
+Review performance monthly and move effort toward channels and creative that produce meaningful customer actions.
+:::
+
+# Expected Value
+
+## From visibility to learning
+
+A stronger digital strategy should help LADD Coffee:
+
+- Increase qualified local awareness
+- Make signature products easier to discover
+- Reduce friction between discovery and visit
+- Create an owned audience for retention
+- Learn which channels and content influence behavior
+- Make future marketing investment more evidence-based
+
+> The most valuable early outcome is not simply more impressions — it is a system that tells LADD Coffee what is working.
+
+# References
+
+- CaliNook. (2026). *LADD Coffee*. June 3, 2026.
+- Los Angeles County fictitious business name publication. (2026). *LADD Coffee*, West Covina.
+- Corner. (2026). *LADD Coffee — West Covina*.
+- Quarto. *RevealJS Presentations*.
+- CCIDM. *Effective Quarto Slides*.
+
+# Appendix
+
+## Research notes
+
+This proposal uses publicly available information to establish basic business context. No private sales, POS, web analytics, advertising, or customer-level data from LADD Coffee were available during preparation.
+
+## Reproducibility
+
+The channel-priority chart and planning tables in this deck are generated directly from R objects contained in the QMD file.
+
+## Future project links
+
+**Published presentation:** <https://mjshawell.github.io/IBM-6540-IBM-6300/Improving-LADD-Coffee-Digital-Strategy.html#/title-slide>
+
+**GitHub repository:** <https://github.com/mjshawell/IBM-6540-IBM-6300>
